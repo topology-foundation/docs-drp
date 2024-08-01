@@ -1,47 +1,29 @@
 ---
+sidebar_label: 'Introduction'
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Topology Protocol
 
-Let's discover **Docusaurus in less than 5 minutes**.
+# Overview
 
-## Getting Started
+This is the official TypeScript implementation of the Topology Protocol. The Topology Protocol is a local-first decentralized protocol for real-time applications. It introduces a new concept for Conflict-free Replicated Objects (CRO), that are built on top of libp2p and composed of CRDTs.
 
-Get started by **creating a new site**.
+# Specifications
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+The specifications of the Topology Protocol are shared across different client implementations and can be found in the [specs repository](https://github.com/topology-foundation/specs). Currently the specifications are starting to be written based on this implementation.
 
-### What you'll need
+# Packages
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+This repository is a monorepo that contains the following packages:
 
-## Generate a new site
+| Package | Description                                      |
+|---------|--------------------------------------------------|
+| crdt    | CRDT implementations intended to use as builtins |
+| network | Network middleware to abstract libp2p            |
+| node    | Topology Node library and CLI                    |
+| object  | CRO objects structure implementation             |
 
-Generate a new Docusaurus site using the **classic template**.
+# Examples
 
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+All the examples are located in the `examples` directory. Currently, there is two example, a simple canvas where you can paint pixels and a chat application. You can also look into the [counter-splash](https://github.com/topology-foundation/counter-splash) (demo for EthCC 2024) repository for a more complex example.
