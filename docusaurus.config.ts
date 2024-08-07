@@ -51,6 +51,11 @@ const config: Config = {
       },
       items: [
         {
+          label: 'Getting Started',
+          position: 'right',
+          to: '/docs/CRDT/CRDTs'
+        },
+        {
           href: 'https://topology.gg/',
           position: 'right',
           label: 'Topology Website',
