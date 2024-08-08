@@ -51,9 +51,14 @@ const config: Config = {
       },
       items: [
         {
-          label: 'Getting Started',
+          label: 'Get Started',
           position: 'right',
-          to: '/docs/CRDT/CRDTs'
+          to: '/docs/category/get-started'
+        },
+        {
+          label: 'Concepts',
+          position: 'right',
+          to: '/docs/category/concepts'
         },
         {
           href: 'https://topology.gg/',

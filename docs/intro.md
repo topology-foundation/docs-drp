@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Introduction'
+sidebar_label: 'Welcome to Topology'
 sidebar_position: 1
 ---
 
-# Topology Protocol
+# Welcome to Topology
 
 # Overview
 

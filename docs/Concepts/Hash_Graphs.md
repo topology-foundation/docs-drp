@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Network'
+sidebar_label: 'Hash Graphs'
 sidebar_position: 4
 ---
 

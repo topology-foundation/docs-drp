@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Node'
+sidebar_label: 'Decentralized Random Access Memory (dRAM)'
 sidebar_position: 5
 ---
 
