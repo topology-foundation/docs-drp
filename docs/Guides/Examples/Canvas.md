@@ -1,6 +1,6 @@
 ---
-sidebar_label: 'Chat System'
-sidebar_position: 2
+sidebar_label: 'Canvas'
+sidebar_position: 1
 ---
 
 # Canvas Example

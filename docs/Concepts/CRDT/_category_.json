@@ -2,6 +2,8 @@
   "label": "Conflict-free Replicated Data Type (CRDT)",
   "position": 1,
   "link": {
-    "type": "generated-index"
+    "type": "doc",
+    "id": "CRDTs"
   }
+
 }

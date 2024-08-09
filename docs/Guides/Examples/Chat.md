@@ -1,6 +1,6 @@
 ---
-sidebar_label: 'Chat'
-sidebar_position: 1
+sidebar_label: 'Chat System'
+sidebar_position: 2
 ---
 
 # Chat System Example

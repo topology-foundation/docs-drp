@@ -1,38 +1,18 @@
 ---
-sidebar_label: 'CRO'
+sidebar_label: 'Conflict-free Replicated Objects (CROs)'
 sidebar_position: 3
 ---
 
-# Conflict-free Replicated Objects (CROs)
+# What are CROs?
 
-# Overview
+**CROs** are composable programmable objects that can be updated in real time concurrently and subscribed to as **PubSub** groups on a open P2P network.
 
-This package provides a simple implementation of Conflict-free Replicated Objects (CROs) as defined in the Topology Protocol. CROs are a type of composable object that can be replicated across multiple nodes in a network, and can be updated concurrently by multiple clients without the need for coordination.
+### ***Blueprint***
 
-## Usage
+A CRO is an instance of a ***blueprint*** that specifies the operations for each CRO. It can be created using built-in CRDTs presented in the protocol or by composing other existing ***blueprints***.
 
-This package is intended to implement a basic abstract class that can be extended for the creation of custom CROs. Basic operations for synchronization are provided, but the implementation of the actual object behavior is left to the app developer.
+### Interaction
 
-For starting, you can install it using:
+parte 8 do paper
 
-```bash
-# yarn
-yarn add @topology-foundation/object
-
-# npm
-npm install @topology-foundation/object
-```
-
-# Operations
-
-### Operation 1
-- Document this operation
-
-### Operation 2
-- Document this operation
-
-### Operation 3
-- Document this operation
-
-### Operation 4
-- Document this operation
+### Operation lyfe cycle

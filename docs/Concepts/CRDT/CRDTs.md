@@ -1,8 +1,3 @@
----
-sidebar_label: 'What are CRDTs?'
-sidebar_position: 1
----
-
 # What are CRDTs?
 
 Conflict-free Replicated Data Types (CRDTs) are data structures that are replicated across multiple nodes in a network. CRDTs key features are:
