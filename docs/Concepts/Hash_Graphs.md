@@ -9,7 +9,7 @@ sidebar_position: 4
 
 **Causal order** is a partial order that can be enforced in a distributed system without coordination. Given an operation history of a CRO, its state is derived from applying the operations in linear order obtained from topological sort that preserves the causal order. There are some approaches that are vulnerable and not Byzantine Fault Tolerance, so we need a solution to solve this issue.
 
-### Our solution
+### Topology's solution
 
 Our solution is based on **hash graphs** and it works by encoding an operation history in a **directed acyclic graph** where the edges represent *causal dependency reporting* among the operations and the vertices contain the operations and the hashes of their causal dependencies, which we can define as a tuple (*u*, **D**), where *u* is the operation and **D** is the set of hashed vertices that are its causal dependencies.
 
@@ -29,7 +29,3 @@ In the example above, the vertex *V7* should contain (*u7*, \{*h(V4)*, *h(V5)*})
 With this, when two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs.
 
 This approach is immune to **sybil attacks**, allowing CROs to tolerate many sybil actors.
-
-### Snapshot
-
-### Compaction
