@@ -3,36 +3,6 @@ sidebar_label: 'Specifications'
 sidebar_position: 1
 ---
 
-# Canvas Example
+# Specifications
 
-# Overview
-
-- Explain what's the example
-
-## How it Works
-
-- Explain the example in more detail
-- Maybe using some images to show the example flow
-
-
-## How to Run
-
-After cloning the repository, run the following commands:
-
-```bash
-cd ts-topology/examples/chat
-yarn
-yarn build
-yarn dev
-```
-
-## Debugging
-
-Debugging is made easier by setting the mode in `webpack.config.js` to "development":
-
-```js
-module.exports = {
-  mode: "development",
-  ...
-}
-```
+The specifications of the Topology Protocol are shared across different client implementations and can be found in the [specs repository](https://github.com/topology-foundation/specs). Currently the specifications are starting to be written based on this implementation.

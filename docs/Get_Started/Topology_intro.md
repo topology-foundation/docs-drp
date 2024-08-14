@@ -11,7 +11,3 @@ To make Topology **Byzantine Fault Tolerance (BTF)** resistant, [**Hash Graphs**
 
 
 Nodes that implement the Topology Protocol form a P2P network that we refer to as [**decentralized Random Access Memory (dRAM)**](docs/Concepts/dRAM.md), a new decentralized network that powers lock-free asynchronous decentralized applications.
-
-### Access Control
-
-### Security
