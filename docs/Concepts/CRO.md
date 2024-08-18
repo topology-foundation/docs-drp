@@ -62,3 +62,8 @@ To know if a vertice is safe to drop, a node needs to receive a vertex from ever
 </div>
 
 However, this compaction is unsafe because it may drop causal information in the hash graph that is needed to recongnize the causality of operations that haven't yet arrived from the network. With this, operations that come from unrecognizable causality may come from Byzantine nodes.
+
+### References
+
+- Thomas Hsueh. *Topology Protocol: A Distributed System Protocol
+For The Open Metaverse*. 2024 

@@ -29,3 +29,8 @@ In the example above, the vertex *V7* should contain (*u7*, \{*h(V4)*, *h(V5)*})
 With this, when two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs.
 
 This approach is immune to **sybil attacks**, allowing CROs to tolerate many sybil actors.
+
+### References
+
+- Thomas Hsueh. *Topology Protocol: A Distributed System Protocol
+For The Open Metaverse*. 2024 

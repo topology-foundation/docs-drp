@@ -6,8 +6,8 @@ sidebar_position: 1
 # Welcome to Topology
 
 <div align="center">
-  <img src="https://avatars.githubusercontent.com/u/157637200" height="250"/>
-  <br />
+
+![alt text](../static/img/banner.jpeg)
 </div>
 
 

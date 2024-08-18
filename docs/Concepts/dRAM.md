@@ -17,5 +17,8 @@ So, nodes implementing the Topology Protocol form an ephemeral P2P network that 
 
 ### References
 
+- Thomas Hsueh. *Topology Protocol: A Distributed System Protocol
+For The Open Metaverse*. 2024 
+
 
 
