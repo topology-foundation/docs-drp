@@ -4,20 +4,12 @@ sidebar_position: 2
 
 # PN-Counter
 
-# Overview
+The **PN-Counter** combines **two G-Counters**, one for **increment** and another one for **decrement**. The value of the PN-Counter is the increment counter minus the decrement counter. This might lead to having large vectors, so to avoid this only **super-peers** should replicate the counter.
 
-- Explain how this CRDT works briefly
+A PN-Counter might be useful to track the number of users logged in to an P2P application.
 
-# Operations
+### References
 
-### Operation 1
-- Document this operation
+- [Wikipedia, *https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs*](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs)
 
-### Operation 2
-- Document this operation
-
-### Operation 3
-- Document this operation
-
-### Operation 4
-- Document this operation
+- Shapiro, Marc; Preguiça, Nuno; Baquero, Carlos; Zawirski, Marek. *A Comprehensive Study of Convergent and Commutative Replicated Data Types*. 2011
