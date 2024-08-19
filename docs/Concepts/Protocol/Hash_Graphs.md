@@ -18,7 +18,7 @@ Therefore, if *u* is an update operation, given two operations *u1* and *u2*, if
 Here is an example of a CRO's hash graph:
 
 <div align="center">
-    ![alt text](../../static/img/hash_graph.png)
+    ![alt text](../../../static/img/hash_graph.png)
 
     **Figure 1:** Hash graph of a CRO.
 </div>
@@ -29,6 +29,10 @@ In the example above, the vertex *V7* should contain (*u7*, \{*h(V4)*, *h(V5)*})
 With this, when two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs.
 
 This approach is immune to **sybil attacks**, allowing CROs to tolerate many sybil actors.
+
+### Concurrency Semantics
+
+
 
 ### References
 

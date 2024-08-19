@@ -1,8 +1,7 @@
 {
-  "label": "CRDT built-ins",
+  "label": "Topology Protocol",
   "position": 1,
   "link": {
     "type": "generated-index"
   }
-
 }

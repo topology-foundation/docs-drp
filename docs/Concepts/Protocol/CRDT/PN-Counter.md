@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# PN-Counter
+# PN-Counter (Positive-Negative Counter)
 
 The **PN-Counter** combines **two G-Counters**, one for **increment** and another one for **decrement**. The value of the PN-Counter is the increment counter minus the decrement counter. This might lead to having large vectors, so to avoid this only **super-peers** should replicate the counter.
 
