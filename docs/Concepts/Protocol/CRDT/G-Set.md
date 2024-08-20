@@ -2,36 +2,14 @@
 sidebar_position: 3
 ---
 
-# G-Set
+# G-Set (Grow-only Set)
 
+The **G-Set** is a set that only allows to add elements. So, if an element is added to the G-Set, it cannot be removed. It has a **lookup** function to check if an element is in the set. The **merge** operation is the union of two G-Sets.
 
-hash graph figure update
+The G-Set is useful as a building block for more complex constructions.
 
-what is topology page graphics -> skeleton (stand by)
+### References
 
-What are CRDT? -> Get started
+- [Wikipedia, *https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs*](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs)
 
-Concepts -> built ins -> explain all the built-ins
-
-get started -> causal ordering 
-
-hash graph - explain semantics
-
-check dRAM again - more fun way
-
-remove guides, just examples
-
-move examples above concepts
-
-add gifs to examples
-
-Project to "learn more page" to get started
-
-Get Started
-Examples
-Concepts
-    Semantics
-
-
-discuss oak verbs
-
+- Shapiro, Marc; Preguiça, Nuno; Baquero, Carlos; Zawirski, Marek. *A Comprehensive Study of Convergent and Commutative Replicated Data Types*. 2011

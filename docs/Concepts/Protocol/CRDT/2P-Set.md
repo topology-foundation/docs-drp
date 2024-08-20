@@ -2,22 +2,12 @@
 sidebar_position: 4
 ---
 
-# 2P-Set
+# 2P-Set (Two-Phase Set)
 
-# Overview
+The **2P-Set** consists on combining two **G-Sets**, where on of these is going to work as a remove set (also called *tombstone* set). This way, the 2P-Set allows elements to be removed. When an element is removed, its added to the *tombstone* set and once an element is in the *tombstone* set, it cannot be re-added. To avoid anomalies, it is not possible to remove an element that it is not present in the 2P-Set.
 
-- Explain how this CRDT works briefly
+### References
 
-# Operations
+- [Wikipedia, *https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs*](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs)
 
-### Operation 1
-- Document this operation
-
-### Operation 2
-- Document this operation
-
-### Operation 3
-- Document this operation
-
-### Operation 4
-- Document this operation
+- Shapiro, Marc; Preguiça, Nuno; Baquero, Carlos; Zawirski, Marek. *A Comprehensive Study of Convergent and Commutative Replicated Data Types*. 2011
