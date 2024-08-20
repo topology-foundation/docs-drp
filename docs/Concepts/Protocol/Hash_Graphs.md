@@ -5,13 +5,7 @@ sidebar_position: 4
 
 # Hash Graphs
 
-### Causal Order
-
-**Causal order** is a partial order that can be enforced in a distributed system without coordination. Given an operation history of a CRO, its state is derived from applying the operations in linear order obtained from topological sort that preserves the causal order. There are some approaches that are vulnerable and not Byzantine Fault Tolerance, so we need a solution to solve this issue.
-
-### Topology's solution
-
-Our solution is based on **hash graphs** and it works by encoding an operation history in a **directed acyclic graph** where the edges represent *causal dependency reporting* among the operations and the vertices contain the operations and the hashes of their causal dependencies, which we can define as a tuple (*u*, **D**), where *u* is the operation and **D** is the set of hashed vertices that are its causal dependencies.
+Topology's **hash graph** approach works by encoding an operation history in a **directed acyclic graph** where the edges represent *causal dependency reporting* among the operations and the vertices contain the operations and the hashes of their causal dependencies, which we can define as a tuple (*u*, **D**), where *u* is the operation and **D** is the set of hashed vertices that are its causal dependencies.
 
 Therefore, if *u* is an update operation, given two operations *u1* and *u2*, if *u2* reported *u1* as its causal dependency, *u2* must have happened after *u1* (*u2* &rarr; *u1*).
 
@@ -32,7 +26,22 @@ This approach is immune to **sybil attacks**, allowing CROs to tolerate many syb
 
 ### Concurrency Semantics
 
+A CRO state can be affected by **concurrent operations** that are not **commutative** (*i.e.* different execution orders produce different results). To avoid this, the CRO must define its behavior in those situations, which we call ***concurrency semantics***.
 
+Let's considers this hash graph example:
+
+<div align="center">
+    ![alt text](../../../static/img/concurrency.png)
+
+    **Figure 2:** Hash graph for a register CRO that accepts addition and multiplication.
+</div>
+
+Since **addition** and **multiplication** do not commute, and if we define two different execution orders, we will have 2 different results. For example:
+
+1. (1+7)*3+2=26
+2. (1*3)+7+2=12
+
+To solve this we must define a concurrency semantic, for example, define that addition goes first in case of concurrency. With this, and considering the example above, every honest replica of this hash graph will arrive at 26 as its final state.
 
 ### References
 
