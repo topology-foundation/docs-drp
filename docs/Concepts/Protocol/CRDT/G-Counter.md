@@ -16,7 +16,7 @@ Our G-Counter implementation supports both **operation** and **state** changes. 
         B["<b>Node2</b>\n<font color="brown">(node2, 10)</font>"]--<b>inc(</b> 5 <b>)</b>-->D["<b>Node2</b>\n<font color="brown">(node2, 15)</font>"]
         C--<b>merge(</b> Node2 <b>)</b>-->E["<b>Node1</b>\n<font color="blue">(node1, 10)</font>\n<font color="brown">(node2, 15)<font>"]
         C-.->F
-        D--<b>merge(</b> Node1 <b>)</b>-->F["<b>Node2</b>\n<font color="blue">(node1, 10)</font>\n<font color="brown">(node2, 15)<font>"]
+        D--<b>merge(</b> Node1 <b>)</b>-->F["<b>Node2</b>\n<font color="blue">(node1, 10)</font>\n<font color="brown">(node2, 15)</font>\n<p style="background-color: white; font-color: black; border-radius: 15px; border: solid ;border-width: thin">read(): 25</p>"]
         D-.->E
         E--<b>inc(</b> 10 <b>)</b>-->G["<b>Node1</b>\n<font color="blue">(node1, 20)</font>\n<font color="brown">(node2, 15)</font>"]
         F--<b>inc(</b> 10 <b>)</b>-->H["<b>Node2</b>\n<font color="blue">(node1, 10)</font>\n<font color="brown">(node2, 25)</font>"]
