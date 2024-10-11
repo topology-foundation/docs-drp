@@ -1,7 +1,7 @@
 {
-  "label": "Concepts",
-  "position": 4,
-  "link": {
-    "type": "generated-index"
-  }
+	"label": "Technical Overview",
+	"position": 3,
+	"link": {
+		"type": "generated-index"
+	}
 }
