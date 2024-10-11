@@ -7,23 +7,15 @@ const config: Config = {
 	tagline: 'Building distributed real-time applications',
 	favicon: 'img/favicon.ico',
 
-	// Set the production url of your site here
 	url: 'https://docs.topology.gg',
-	// Set the /<baseUrl>/ pathname under which your site is served
-	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: '/',
 
-	// GitHub pages deployment config.
-	// If you aren't using GitHub pages, you don't need these.
-	organizationName: 'topology-foundation', // Usually your GitHub org/user name.
-	projectName: 'docs-topology', // Usually your repo name.
+	organizationName: 'topology-foundation',
+	projectName: 'docs-topology',
 
 	onBrokenLinks: 'warn',
 	onBrokenMarkdownLinks: 'warn',
 
-	// Even if you don't use internationalization, you can use this field to set
-	// useful metadata like html lang. For example, if your site is Chinese, you
-	// may want to replace "en" with "zh-Hans".
 	i18n: {
 		defaultLocale: 'en',
 		locales: ['en'],
@@ -35,6 +27,9 @@ const config: Config = {
 		[
 			'classic',
 			{
+				docs: {
+					routeBasePath: '/',
+				},
 				theme: {
 					customCss: './src/css/custom.css',
 				},
@@ -44,7 +39,6 @@ const config: Config = {
 	themes: ['@docusaurus/theme-mermaid'],
 
 	themeConfig: {
-		// Replace with your project's social card
 		image: 'https://avatars.githubusercontent.com/u/157637200',
 		navbar: {
 			title: 'Topology',
@@ -76,11 +70,11 @@ const config: Config = {
 					items: [
 						{
 							label: 'Get Started',
-							href: 'https://docs.topology.gg/get_started',
+							href: 'https://docs.topology.gg/get-started',
 						},
 						{
 							label: 'Technical Overview',
-							href: 'https://docs.topology.gg/technical_overview',
+							href: 'https://docs.topology.gg/technical-overview',
 						},
 						{
 							label: 'Tutorials',

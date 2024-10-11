@@ -22,6 +22,6 @@ There are several different CRDT implementations. To know more about each other,
 
 ### References
 
-- [Wikipedia, *https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs*](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs)
-- [CRDT.tech, *https://crdt.tech/*](https://crdt.tech/)
-- [dremio, *https://www.dremio.com/wiki/conflict-free-replicated-data-type/*](https://www.dremio.com/wiki/conflict-free-replicated-data-type/)
+- [Wikipedia, _https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs_](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#Known_CRDTs)
+- [CRDT.tech, _https://crdt.tech/_](https://crdt.tech/)
+- [dremio, _https://www.dremio.com/wiki/conflict-free-replicated-data-type/_](https://www.dremio.com/wiki/conflict-free-replicated-data-type/)
