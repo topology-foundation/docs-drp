@@ -5,11 +5,16 @@ sidebar_position: 3
 
 # Hash Graph
 
-(must explain: merge, eventual consistency)
-(optional: light-cone)
+## TODO
+- explain the high level role of hash graph (a history of everything happened to a CRO)
+- give one simple friendly example of a hash graph
+- explain graph merges
+- explain eventual consistency
+- optional: explain light-cone
 
 ---
 
+## Old text
 Topology's **hash graph** approach works by encoding an operation history in a **directed acyclic graph** where the edges represent _causal dependency reporting_ among the operations and the vertices contain the operations and the hashes of their causal dependencies, which we can define as a tuple (_u_, **D**), where _u_ is the operation and **D** is the set of hashed vertices that are its causal dependencies.
 
 Therefore, if _u_ is an update operation, given two operations _u1_ and _u2_, if _u2_ reported _u1_ as its causal dependency, _u2_ must have happened after _u1_ (_u2_ &rarr; _u1_).

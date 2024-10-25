@@ -5,10 +5,14 @@ sidebar_position: 4
 
 # Conflict
 
-(must explain: semantics)
+## TODO
+- explain what a conflict is (operations that are concurrent but do not commute; be careful with the word "commute" because it's mathy)
+- explain semantics
+- provide a super simple example
 
 ---
 
+## Old text
 A CRO state can be affected by **concurrent operations** that are not **commutative** (_i.e._ different execution orders produce different results). To avoid this, the CRO must define its behavior in those situations, which we call **_concurrency semantics_**.
 
 Let's considers this hash graph example:

@@ -12,9 +12,9 @@ title: ""
 
 ## Overview
 
-TODO: one sentence explaining what topology protocol is
-
-TODO: one sentence explaining what topology protocol is useful for
+### TODO
+- 1 sentence explaining what topology protocol is
+- 1 sentence explaining what topology protocol is useful for
 
 ## Repositories
 

@@ -5,5 +5,7 @@ sidebar_position: 2
 
 # Concurrency
 
-(must explain causality)
-
+## TODO
+- explain things can happen concurrently
+- explain causality
+- don't involve math
