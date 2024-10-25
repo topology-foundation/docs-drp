@@ -5,7 +5,7 @@ sidebar_position: 4
 
 # Conflict
 
-The [**CRO**](./cro.md) state can be affected by [**concurrent**](./concurrency.md) **operations**. If applying these operations in any order produces the same state of the object we do not have to worry about conflicts. Think about a CRO which accepts addittion and multiplication as opartions. If the initial state is _1_, and we have two **concurrent** operations as below, the order of execution matters.
+The [**CRO**](./cro.md) state can be affected by [**concurrent**](./concurrency.md) **operations**. If applying these operations in any order produces the same state of the object we do not have to worry about conflicts. Think about a CRO which accepts addition and multiplication as opartions. If the initial state is _1_, and we have two **concurrent** operations as below, the order of execution matters.
 
 <div align="center">
     ![alt text](/img/concurrency.png)
