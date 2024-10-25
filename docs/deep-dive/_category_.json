@@ -1,6 +1,6 @@
 {
-	"label": "Tutorials",
-	"position": 3,
+	"label": "Deep dive",
+	"position": 4,
 	"link": {
 		"type": "generated-index"
 	}

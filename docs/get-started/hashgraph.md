@@ -1,9 +1,14 @@
 ---
-sidebar_label: "Hash Graphs"
-sidebar_position: 4
+sidebar_label: '3. Hash Graph'
+sidebar_position: 3
 ---
 
-# Hash Graphs
+# Hash Graph
+
+(must explain: merge, eventual consistency)
+(optional: light-cone)
+
+---
 
 Topology's **hash graph** approach works by encoding an operation history in a **directed acyclic graph** where the edges represent _causal dependency reporting_ among the operations and the vertices contain the operations and the hashes of their causal dependencies, which we can define as a tuple (_u_, **D**), where _u_ is the operation and **D** is the set of hashed vertices that are its causal dependencies.
 
@@ -23,28 +28,3 @@ In the example above, the vertex _V7_ should contain (_u7_, \{_h(V4)_, _h(V5)_})
 With this, when two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs.
 
 This approach is immune to **sybil attacks**, allowing CROs to tolerate many sybil actors.
-
-### Concurrency Semantics
-
-A CRO state can be affected by **concurrent operations** that are not **commutative** (_i.e._ different execution orders produce different results). To avoid this, the CRO must define its behavior in those situations, which we call **_concurrency semantics_**.
-
-Let's considers this hash graph example:
-
-<div align="center">
-    ![alt text](/img/concurrency.png)
-
-    **Figure 2:** Hash graph for a register CRO that accepts addition and multiplication.
-
-</div>
-
-Since **addition** and **multiplication** do not commute, and if we define two different execution orders, we will have 2 different results. For example:
-
-1. (1+7)\*3+2=26
-2. (1\*3)+7+2=12
-
-To solve this we must define a concurrency semantic, for example, define that addition goes first in case of concurrency. With this, and considering the example above, every honest replica of this hash graph will arrive at 26 as its final state.
-
-### References
-
-- Thomas Hsueh. _Topology Protocol: A Distributed System Protocol
-  For The Open Metaverse_. 2024
