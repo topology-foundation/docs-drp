@@ -12,7 +12,7 @@ Here is a snippet from the pseudocode of defining a CRO:
 type CRO {
     operations: string[];
     semanticsType: SemanticsType = {pair-wise or group-wise};
-    resolveConflicts: (vertices: Vertex[]) returns ResolveConflictsType;
+    resolveConflicts: (vertices: Vertex[]) returns Action;
     mergeCallback: (operations: Operation[])
 }
 ```
@@ -22,26 +22,23 @@ Firstly, we need to define an array of operations that can be applied to the CRO
 
 Pair-wise conflict resolution always analyzes two conflicting operations at a time. Group-wise conflict resolution analyzes all conflicting operations at once. The choice of conflict resolution type depends on the application requirements. 
 
-The `resolveConflicts` function needs to be implemented and is used as the judge to handle conflicting operations. It takes an array of vertices and returns a `ResolveConflictsType` object. If the `semanticsType` is pair-wise, the array only has two elements. The `ResolveConflictsType` is essensially only useful for the group-wise semantics, as it holds the hashes of conflicting vertices to be reduced (discarded).
+The `resolveConflicts` function needs to be implemented and is used as the judge to handle conflicting operations. It takes an array of vertices and returns an action. If the `semanticsType` is pair-wise, the array only has two elements. If the action involves multiple vertices, it can also contain the hashes of these vertices.
 
 Lastly, we need to implement the `mergeCallback` function. The underlying data structure is the [hashgraph](./hashgraph.md). All merging is completed automatically by the hashgraph. The `mergeCallback` function is called after the hashgraph has merged the operations. It is used to notify the application that the merge has been completed, and the final state of the CRO has been updated.
 
 Now let's take a look at a tangible example of **conflicting** operations in a CRO.
-Let the CRO be a [pile of sand](https://blog.topology.gg/the-origins-of-topology-from-ledgers-to-sandcastles-part-2/)
+Let the CRO be a [pile of sand](https://blog.topology.gg/the-origins-of-topology-from-ledgers-to-sandcastles-part-2/). We have Alice and Bob, starting from an identical pile. Then Alice flattens the pile, but Bob molds a sphere. The operations are conflicting, so what do we do? A logical conflict resolution behaviour in this situation would be to mold the pile into a sphere first and then flatten it out for both Alice and Bob. 
 
-## TODO
-- explain the structure of a CRO
-    - state
-    - constructor
-    - functions
-    - two "system functions": `resolveConflict()` and `mergeCallback()`
-- provide pseudocode for a super simple CRO that still has conflict to resolve (i.e. resolveConflict is not empty)
+Let's imagine a CRO, which is a set of integers. The operations are add(number) and remove(number). If Alice adds 5 and Bob removes 5 [concurrently](./concurrency.md), we can define conflict resolution mechanism as "addition wins". 
+
+```
+resolveConflicts(vertices: V1, V2): Action {
+    if (V1.opeartion == "add") {
+        return Action(drop, V2);
+    } else {
+        return Action(drop, V1);
+    }
+}
+```
 
 ---
-
-## Old text
-**CROs** are composable programmable objects that can be updated in real time concurrently and subscribed to as **PubSub** groups on a open P2P network.
-
-A CRO is an instance of a ***blueprint*** that specifies the operations for each CRO. It can be created using built-in CRDTs presented in the protocol or by composing other existing ***blueprints***.
-
-When a node performs an update by generating an operation on a CRO, the operation is added to the node's local copy of the CRO hash graph. So, if a node performs a write and right after a read, the read is guaranteed to observe the right. With this, CROs provide **high availability** and **low latency**.
