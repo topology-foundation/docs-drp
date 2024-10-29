@@ -6,30 +6,59 @@ sidebar_position: 3
 # Hash Graph
 
 ## TODO
-- explain the high level role of hash graph (a history of everything happened to a CRO)
-- give one simple friendly example of a hash graph
-- explain graph merges
-- explain eventual consistency
-- optional: explain light-cone
+- Explain the high-level role of hash graph (a history of everything that happens to a CRO)
+- Give one simple, friendly example of a hash graph
+- Explain graph merges
+- Explain eventual consistency
+- Optional: explain light-cone
 
 ---
+# Overview
 
-## Old text
-Topology's **hash graph** approach works by encoding an operation history in a **directed acyclic graph** where the edges represent _causal dependency reporting_ among the operations and the vertices contain the operations and the hashes of their causal dependencies, which we can define as a tuple (_u_, **D**), where _u_ is the operation and **D** is the set of hashed vertices that are its causal dependencies.
+Hashgraph is the secret sauce in CROs that makes it possible for replicas to make independent progress without having to coordinate with other replicas in the network at each step, unlike traditional consensus systems, while still maintaining guarantees that everyone will end up with the same final state. At its core, hashgraph encodes the operation history in a directed acyclic graph (DAG) where:
+- Edges represent causal dependency relationships between operations
+- Vertices contain both the operations and the hashes of their causal dependencies
 
-Therefore, if _u_ is an update operation, given two operations _u1_ and _u2_, if _u2_ reported _u1_ as its causal dependency, _u2_ must have happened after _u1_ (_u2_ &rarr; _u1_).
+More formally, each vertex can be defined as a tuple (u, D), where:
+- u is the operation
+- D is the set of hashed vertices that are its causal dependencies
 
-Here is an example of a CRO's hash graph:
+This structure ensures that if u2 reports u1 as its causal dependency, then u2 must have happened after u1 (denoted as u2 → u1). By using a deterministic conflict resolution heuristic defined in the CRO, the union (or merging in topology's parlance) of hashgraphs is order-agnostic -- meaning the final state is the same even if different replicas merge hashgraphs from their replica peers in different orders.
 
 <div align="center">
     ![alt text](/img/hash_graph.png)
 
     **Figure 1:** Hash graph of a CRO.
-
 </div>
 
-In the example above, the vertex _V7_ should contain (_u7_, \{_h(V4)_, _h(V5)_}). The set of vertices \{_V6_, _V7_, _V8_} consists on the _frontier_, which are the vertices whose operations are currently not the dependencies of any other operation. The next vertice, _V9_, should have \{_h(V6)_, _h(V7)_, _h(V8)_} as its causal dependencies.
+In the example above, vertex _V7_ should contain (_u7_, {_h(V4)_, _h(V5)_}). The set of vertices {_V6_, _V7_, _V8_} constitutes the _frontier_, which are vertices whose operations are currently not dependencies of any other operation. The next vertex, _V9_, should have {_h(V6)_, _h(V7)_, _h(V8)_} as its causal dependencies.
 
-With this, when two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs.
+ 
 
-This approach is immune to **sybil attacks**, allowing CROs to tolerate many sybil actors.
+# HashGraph Merge
+When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs. Merging might require resolving concurrent operations, but this is out of scope for this article (check out the [concurrency](./concurrency) and [conflict](./conflict.md) sections for more details).
+
+Notably, this approach is immune to sybil attacks, allowing CROs to tolerate many sybil actors in the network.
+
+<div align="center">
+    ![hashgraph merge](/img/hashgraph_merge.png)
+
+    **Figure 2:** Merging hashgraphs from CRO replica p and q.
+</div>
+
+# Eventual Consistency
+
+Eventual consistency is a fundamental property of CROs that guarantees all replicas will eventually reach the same state, regardless of the order in which they receive and process operations. This is achieved through several key mechanisms:
+
+1. **Causal History Preservation**: The hashgraph structure maintains the complete causal history of operations through its (u, D) vertex structure, ensuring that causally related operations are always processed in the correct order across all replicas.
+
+2. **Deterministic Conflict Resolution**: When concurrent operations occur, the CRO's conflict resolution rules ensure that all replicas resolve conflicts in exactly the same way, regardless of the order in which they receive the operations.
+
+3. **Commutative Merging**: The merge operation is designed to be commutative, meaning that merging hashgraph A with B produces the same result as merging B with A. This property, combined with the sybil-resistant nature of the hashgraph structure, ensures that replicas converge to the same state regardless of the order of synchronization or the presence of malicious actors.
+
+For example, consider three replicas (R1, R2, and R3) that receive operations in different orders:
+- R1 receives operations in order: A → B → C
+- R2 receives operations in order: B → C → A
+- R3 receives operations in order: C → A → B
+
+Despite these different orderings, after all replicas have synchronized with each other, they will all converge to the same final state. This convergence is guaranteed by the mathematical properties of the hashgraph structure, the deterministic nature of the conflict resolution mechanisms, and the robust causal dependency tracking built into the vertex structure.
