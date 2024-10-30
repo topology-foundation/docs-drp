@@ -212,14 +212,47 @@ Since we want to easily tell users apart, let's add some color to each user base
 ```ts
   // ... other methods ...
 
-	addUser(userId: string, color: string) {
-		const userColorString = `${userId}:${color}`;
-		// User all start at 0,0
-		// Encode the color as part of the new id
-		this.positions.set(userColorString, { x: 0, y: 0 });
-	}
+  addUser(userId: string, color: string) {
+	const userColorString = `${userId}:${color}`;
+	// User all start at 0,0
+	// Encode the color as part of the new id
+	this.positions.set(userColorString, { x: 0, y: 0 });
+  }
+
+  moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
+    // Check if user exist
+    const userColorString = [...this.positions.keys()].find((u) =>
+		u.startsWith(`${userId}:`),
+	);
+
+    if (userColorString) {
+      const currentPos = this.getUserPosition(userColorString);
+      if (currentPos) {
+        switch (direction) {
+          case "UP":
+            currentPos.y += 1;
+            break;
+          case "DOWN":
+            currentPos.y -= 1;
+            break;
+          case "LEFT":
+            currentPos.x -= 1;
+            break;
+          case "RIGHT":
+            currentPos.x += 1;
+            break;
+       	}
+      }
+    }
+  }
 
   // ... other methods ...
+
+  getUserPosition(userColorString: string) {
+    // Get where user are on the grid.
+    const currentPos = this.positions.get(userColorString);
+    return currentPos ? currentPos : undefined;
+  }
 
   mergeCallback(operations: Operation[]): void {
 		// reset this.positions
@@ -272,12 +305,15 @@ export class Grid implements CRO {
     // Encode the color as part of the new id
     this.positions.set(userColorString, { x: 0, y: 0 });
   }
+
   moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
     // Check if user exist
-    const user = [...this.positions.keys()].find((u) => u === userId);
+    const userColorString = [...this.positions.keys()].find((u) =>
+      u.startsWith(`${userId}:`)
+    );
 
-    if (user) {
-      const currentPos = this.getUserPosition(userId);
+    if (userColorString) {
+      const currentPos = this.getUserPosition(userColorString);
       if (currentPos) {
         switch (direction) {
           case "UP":
@@ -302,9 +338,9 @@ export class Grid implements CRO {
     return [...this.positions.keys()];
   }
 
-  getUserPosition(userId: string) {
+  getUserPosition(userColorString: string) {
     // Get where user are on the grid.
-    const currentPos = this.positions.get(userId);
+    const currentPos = this.positions.get(userColorString);
     return currentPos ? currentPos : undefined;
   }
 
@@ -808,3 +844,225 @@ for (const userColorString of users) {
 Finally, this loop renders the users' position on the 2D grid. It loops through all the current `users` and get the `userId` and `color` from the `userColorString`. It then gets the user's position via `getUserPosition` and draws them in the grid. At the end of the code it also adds keyframes for a glow effect.
 
 ## Putting everything together
+
+Let's now try to put everything together by connecting the UI with our Grid CRO.
+
+First, define some helper function to add and move user, which checks for the initialization of the Grid CRO.
+
+```ts
+async function addUser() {
+  if (!gridCRO) {
+    console.error("Grid CRO not initialized");
+    alert("Please create or join a grid first");
+    return;
+  }
+
+  gridCRO.addUser(
+    node.networkNode.peerId,
+    getColorForNodeId(node.networkNode.peerId)
+  );
+  render();
+}
+
+async function moveUser(direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
+  if (!gridCRO) {
+    console.error("Grid CRO not initialized");
+    alert("Please create or join a grid first");
+    return;
+  }
+
+  gridCRO.moveUser(node.networkNode.peerId, direction);
+  render();
+}
+```
+
+Now let's add a function that subscribes to the messages of our CRO object and re-render when new messages is received.
+
+```ts
+async function createConnectHandlers() {
+  node.addCustomGroupMessageHandler(topologyObject.id, (e) => {
+    if (topologyObject) {
+      objectPeers = node.networkNode.getGroupPeers(topologyObject.id);
+    }
+    render();
+  });
+
+  node.objectStore.subscribe(topologyObject.id, (_, obj) => {
+    render();
+  });
+}
+```
+
+Finally, in our `main` function, add the following:
+
+```ts
+async function main() {
+  await node.start();
+  render();
+
+  node.addCustomGroupMessageHandler("", (e) => {
+    peers = node.networkNode.getAllPeers();
+    discoveryPeers = node.networkNode.getGroupPeers("topology::discovery");
+    render();
+  });
+
+  const buttonCreate = <HTMLButtonElement>document.getElementById("createGrid");
+  buttonCreate.addEventListener("click", async () => {
+    topologyObject = await node.createObject(new Grid());
+    gridCRO = topologyObject.cro as Grid;
+    createConnectHandlers();
+    await addUser();
+    render();
+  });
+
+  const buttonConnect = <HTMLButtonElement>document.getElementById("joinGrid");
+  buttonConnect.addEventListener("click", async () => {
+    const croId = (<HTMLInputElement>document.getElementById("gridInput"))
+      .value;
+    try {
+      topologyObject = await node.createObject(
+        new Grid(),
+        croId,
+        undefined,
+        true
+      );
+      gridCRO = topologyObject.cro as Grid;
+      createConnectHandlers();
+      await addUser();
+      render();
+      console.log("Succeeded in connecting with CRO", croId);
+    } catch (e) {
+      console.error("Error while connecting with CRO", croId, e);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "w") moveUser("UP");
+    if (event.key === "a") moveUser("LEFT");
+    if (event.key === "s") moveUser("DOWN");
+    if (event.key === "d") moveUser("RIGHT");
+  });
+
+  const copyButton = <HTMLButtonElement>document.getElementById("copyGridId");
+  copyButton.addEventListener("click", () => {
+    const gridIdText = (<HTMLSpanElement>document.getElementById("gridId"))
+      .innerText;
+    navigator.clipboard
+      .writeText(gridIdText)
+      .then(() => {
+        console.log("Grid CRO ID copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  });
+}
+```
+
+Let's go through it step by step as to what we are doing here:
+
+```ts
+await node.start();
+render();
+
+node.addCustomGroupMessageHandler("", (e) => {
+  peers = node.networkNode.getAllPeers();
+  discoveryPeers = node.networkNode.getGroupPeers("topology::discovery");
+  render();
+});
+```
+
+We are already familiar with `node.start()` which starts the topology node. The new addition here is the `render` call, which in this case will perform the initial rendering of the UI.
+
+We also change the `addCustomGroupMessageHandler` to update the `peers` and `discoveryPeers` global variables, and then call the `render` function. What this achieves is that every time a new message regarding the discovery of nearby peers is received, we will re-render the UI, which in this case updates the `peers` and `discoveryPeers` displayed on the UI.
+
+```ts
+const buttonCreate = <HTMLButtonElement>document.getElementById("createGrid");
+buttonCreate.addEventListener("click", async () => {
+  topologyObject = await node.createObject(new Grid());
+  gridCRO = topologyObject.cro as Grid;
+  createConnectHandlers();
+  await addUser();
+  render();
+});
+```
+
+Here we add an event listener for when the create button is clicked. When the button is clicked, we will do the following:
+
+1. `node.createObject(new Grid())`, which registers our Grid CRO with the topology node and propagate it to the network.
+2. `createConnectHandlers` which subscribes to the messages on the Grid CRO object
+3. ``addUser` which adds us as one of the users on the Grid.
+4. `render` which will now render the Grid on the UI as both `topologyObject`, `gridCRO` and the user is now initialized.
+
+```ts
+const buttonConnect = <HTMLButtonElement>document.getElementById("joinGrid");
+buttonConnect.addEventListener("click", async () => {
+  const croId = (<HTMLInputElement>document.getElementById("gridInput")).value;
+  try {
+    topologyObject = await node.createObject(
+      new Grid(),
+      croId,
+      undefined,
+      true
+    );
+    gridCRO = topologyObject.cro as Grid;
+    createConnectHandlers();
+    await addUser();
+    render();
+    console.log("Succeeded in connecting with CRO", croId);
+  } catch (e) {
+    console.error("Error while connecting with CRO", croId, e);
+  }
+});
+```
+
+Similarly we add an event listener for when the connect button is clicked, which will:
+
+1. Set the `croId` specified in the input
+2. Register the Grid CRO to our node with the provided `croId`, which connects to the existing CRO.
+3. `createConnectHandlers` subscribes to the messages on the connected Grid CRO object
+4. `addUser` adds us as a new user.
+5. Finally, `render` will put all the new information and the grid on the UI as they are now initialized and available.
+
+```ts
+document.addEventListener("keydown", (event) => {
+  if (event.key === "w") moveUser("UP");
+  if (event.key === "a") moveUser("LEFT");
+  if (event.key === "s") moveUser("DOWN");
+  if (event.key === "d") moveUser("RIGHT");
+});
+```
+
+Of course we cannot forget to add event listener for our key press, how else will we be able to move? Here we listen to the WASD key press event and call the `moveUser` function which will send the `moveUser` operation to CRO and update the user's position on the grid.
+
+```ts
+const copyButton = <HTMLButtonElement>document.getElementById("copyGridId");
+copyButton.addEventListener("click", () => {
+  const gridIdText = (<HTMLSpanElement>document.getElementById("gridId"))
+    .innerText;
+  navigator.clipboard
+    .writeText(gridIdText)
+    .then(() => {
+      console.log("Grid CRO ID copied to clipboard");
+    })
+    .catch((err) => {
+      console.error("Failed to copy: ", err);
+    });
+});
+```
+
+Last but not least, we add the handler for the copy button click event which makes sure the `croId` gets copied to the clipboard.
+
+## Conclusion
+
+You should now be able to see it running in action by running 2 instances of the application, via opening 2 console and running the following in both of them:
+
+```ts
+npm run dev
+```
+
+You should get one instance running on `http://localhost:5713` and one more running on `http://localhost:5714`. You might have to wait until both of them detect each other before clicking the create CRO button. After clicking the create CRO button on one of them, connect to the created CRO id in the other, and you should get something like this!
+
+![grid example gif](imgs/grid-2d-example.gif)
+
+With that, we have completed our Grid 2D tutorial. If you want to learn more about CROs and Topology, do look at the rest of our docs!
