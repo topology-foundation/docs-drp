@@ -9,7 +9,7 @@ A simple multiplayer 2D Grid where players can move on the grid one space at a t
 
 ## What you'll be building?
 
-We'll attempt to build a 2D Grid space using topology where users appears to be circle on a grid and can move around one space at a time.
+We'll build a 2D Grid space using topology where users appears to be circle on a grid and can move around one space at a time.
 
 Our end result should look something like this:
 
@@ -23,7 +23,7 @@ First we'll have to setup our dev environment. I'll be using vite here with type
 npm create vite@latest grid-2d -- --template vanilla-ts
 ```
 
-This should create a simple typescript project with typescript. You should be able to see a project structure similar to what's shown below.
+This should create a simple typescript project with typescript. You should see a project structure similar to what's shown below.
 
 ![project structure](imgs/grid_project_structure.png)
 
@@ -131,7 +131,7 @@ Now, let's turn this into a `CRO`!
 
 ## Implementing the CRO interface.
 
-To build a CRO, we''ll have to implement the `CRO` interface.
+To build a CRO, we'll have to implement the `CRO` interface.
 
 ```ts
 import { CRO } from "@topology-foundation/object";
@@ -411,7 +411,7 @@ Go to `http://localhost:5173` and you should see something like this in the deve
 
 ![alt text](imgs/grid-2d-browser-console-node-1.png)
 
-Congratulations! You now have a topology node running!
+Congratulations! You now have a running topology node!
 
 ## Building the Grid UI
 
@@ -475,7 +475,7 @@ We are displaying a few things through this UI:
 5. Button to generate a new CRO
 6. Button to connect to a CRO
 7. The grid where the users will appear
-8. Peers that are interacting with the CRO
+8. Peers who are interacting with the CRO
 
 It should look something like this when you do `npm run dev`:
 
@@ -570,7 +570,7 @@ const getColorForNodeId = (id: string): string => {
 // ... more code ...
 ```
 
-Now onto to core of this application, the `render` function which will render all our information on the UI. The `render` function will be ran every time there's new updates to the state.
+Now onto to core of this application, the `render` function which will render all our information on the UI. The `render` function will be ran every time there are new updates to the state.
 
 ```ts
 // ... more code ...
@@ -845,9 +845,9 @@ Finally, this loop renders the users' position on the 2D grid. It loops through 
 
 ## Putting everything together
 
-Let's now try to put everything together by connecting the UI with our Grid CRO.
+Let's connect the UI with our Grid CRO.
 
-First, define some helper function to add and move user, which checks for the initialization of the Grid CRO.
+First, let's define some helper functions to add and move users. These functions include checks for Grid CRO initialization:
 
 ```ts
 async function addUser() {
@@ -876,7 +876,7 @@ async function moveUser(direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
 }
 ```
 
-Now let's add a function that subscribes to the messages of our CRO object and re-render when new messages is received.
+Next, let's add a function that subscribes to our CRO's messages and triggers a re-render when new messages are received:
 
 ```ts
 async function createConnectHandlers() {
@@ -893,7 +893,7 @@ async function createConnectHandlers() {
 }
 ```
 
-Finally, in our `main` function, add the following:
+Finally, add the following to our main function:
 
 ```ts
 async function main() {
@@ -959,7 +959,7 @@ async function main() {
 }
 ```
 
-Let's go through it step by step as to what we are doing here:
+Let's examine each part of the code in detail:
 
 ```ts
 await node.start();
@@ -972,9 +972,9 @@ node.addCustomGroupMessageHandler("", (e) => {
 });
 ```
 
-We are already familiar with `node.start()` which starts the topology node. The new addition here is the `render` call, which in this case will perform the initial rendering of the UI.
+We are already familiar with `node.start()` which starts the topology node. The new addition here is the `render` call, which in this case will perform the initial UI rendering.
 
-We also change the `addCustomGroupMessageHandler` to update the `peers` and `discoveryPeers` global variables, and then call the `render` function. What this achieves is that every time a new message regarding the discovery of nearby peers is received, we will re-render the UI, which in this case updates the `peers` and `discoveryPeers` displayed on the UI.
+The `addCustomGroupMessageHandler` updates the `peers` and `discoveryPeers` global variables and triggers a re-render. This ensures that the UI updates whenever we receive messages about newly discovered peers, which in this case updates the `peers` and `discoveryPeers` displayed on the UI.
 
 ```ts
 const buttonCreate = <HTMLButtonElement>document.getElementById("createGrid");
@@ -987,12 +987,12 @@ buttonCreate.addEventListener("click", async () => {
 });
 ```
 
-Here we add an event listener for when the create button is clicked. When the button is clicked, we will do the following:
+When the create button is clicked, we:
 
 1. `node.createObject(new Grid())`, which registers our Grid CRO with the topology node and propagate it to the network.
-2. `createConnectHandlers` which subscribes to the messages on the Grid CRO object
-3. ``addUser` which adds us as one of the users on the Grid.
-4. `render` which will now render the Grid on the UI as both `topologyObject`, `gridCRO` and the user is now initialized.
+2. `createConnectHandlers()` which subscribes to the messages on the Grid CRO object
+3. `addUser()` which adds us as one of the users on the Grid.
+4. `render()` which will now render the Grid on the UI as both `topologyObject`, `gridCRO` and the user is now initialized.
 
 ```ts
 const buttonConnect = <HTMLButtonElement>document.getElementById("joinGrid");
@@ -1016,9 +1016,9 @@ buttonConnect.addEventListener("click", async () => {
 });
 ```
 
-Similarly we add an event listener for when the connect button is clicked, which will:
+Similarly, when the connect button is clicked, we:
 
-1. Set the `croId` specified in the input
+1. Get the `croId` from the input field
 2. Register the Grid CRO to our node with the provided `croId`, which connects to the existing CRO.
 3. `createConnectHandlers` subscribes to the messages on the connected Grid CRO object
 4. `addUser` adds us as a new user.
@@ -1033,7 +1033,7 @@ document.addEventListener("keydown", (event) => {
 });
 ```
 
-Of course we cannot forget to add event listener for our key press, how else will we be able to move? Here we listen to the WASD key press event and call the `moveUser` function which will send the `moveUser` operation to CRO and update the user's position on the grid.
+To enable movement, we add event listeners for WASD key presses. Each key press triggers the `moveUser` function, which sends the movement operation to the CRO and updates the user's position on the grid.
 
 ```ts
 const copyButton = <HTMLButtonElement>document.getElementById("copyGridId");
@@ -1051,18 +1051,18 @@ copyButton.addEventListener("click", () => {
 });
 ```
 
-Last but not least, we add the handler for the copy button click event which makes sure the `croId` gets copied to the clipboard.
+Last but not least, we add the handler for the copy button click event which copies the `croId` to the clipboard.
 
 ## Conclusion
 
-You should now be able to see it running in action by running 2 instances of the application, via opening 2 console and running the following in both of them:
+You should now be able to see it running in action. Open two terminal windows and run the following command in each:
 
 ```ts
 npm run dev
 ```
 
-You should get one instance running on `http://localhost:5713` and one more running on `http://localhost:5714`. You might have to wait until both of them detect each other before clicking the create CRO button. After clicking the create CRO button on one of them, connect to the created CRO id in the other, and you should get something like this!
+This will start one instance at http://localhost:5713 and another at http://localhost:5714. Wait for the instances to detect each other before creating a CRO. After creating a CRO on one instance, connect to it from the other using the CRO ID. You should see something like this:
 
 ![grid example gif](imgs/grid-2d-example.gif)
 
-With that, we have completed our Grid 2D tutorial. If you want to learn more about CROs and Topology, do look at the rest of our docs!
+Congratulations, you've have completed the Grid 2D tutorial. If you want to learn more about CROs and Topology, do explore the rest of our documentation!
