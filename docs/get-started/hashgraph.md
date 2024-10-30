@@ -15,7 +15,7 @@ sidebar_position: 3
 ---
 # Overview
 
-Hashgraph is the secret sauce in CROs that makes it possible for replicas to make independent progress without having to coordinate with other replicas in the network at each step, unlike traditional consensus systems, while still maintaining guarantees that everyone will end up with the same final state. At its core, hashgraph encodes the operation history in a directed acyclic graph (DAG) where:
+Hashgraph is the secret sauce in CROs. It allows replicas to progress independently without needing to coordinate with each other at every step, which is a requirement in traditional consensus systems. Despite this independence, Hashgraph ensures that all replicas ultimately achieve the same final state. At its core, hashgraph encodes the operation history in a directed acyclic graph (DAG) where:
 - Edges represent causal dependency relationships between operations
 - Vertices contain both the operations and the hashes of their causal dependencies
 
