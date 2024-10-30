@@ -10,7 +10,7 @@ sidebar_position: 2
 - explain causality
 - don't involve math
 
-## Causality
+## Causal Ordering
 
 In a distributed system, **causality** refers to how operations 
 on different machines are related, where one operation 
