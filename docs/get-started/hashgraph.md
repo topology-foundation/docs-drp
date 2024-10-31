@@ -27,7 +27,7 @@ This structure ensures that if operation u2 reports u1 as its causal dependency,
 
 <div align="center">
   
-![Hash graph of a CRO](/static/img/hashgraph_new.png)
+![Hash graph of a CRO](/img/hashgraph_new.png)
 
 **Figure 1:** Hash graph of a CRO.
 </div>
@@ -38,7 +38,7 @@ When two nodes synchronize their operation histories of the same CRO, they effec
 
 <div align="center">
 
-![Merging hashgraphs](/static/img/hashgraph_merge.png)
+![Merging hashgraphs](/img/hashgraph_merge.png)
 
 **Figure 2:** Merging hashgraphs from CRO replicas P and Q.
 </div>
