@@ -40,7 +40,7 @@ When two nodes synchronize their operation histories of the same CRO, they effec
 
 ![Merging hashgraphs](/static/img/hashgraph_merge.png)
 
-**Figure 2:** Merging hashgraphs from CRO replica p and q.
+**Figure 2:** Merging hashgraphs from CRO replicas P and Q.
 </div>
 
 # Eventual Consistency
