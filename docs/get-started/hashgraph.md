@@ -49,7 +49,7 @@ Eventual consistency is a fundamental property of CROs that guarantees all repli
 
 1. **Causal History Preservation**: The hashgraph structure maintains the complete causal history of operations through its (u, D) vertex structure, ensuring that causally related operations are always processed in the correct order across all replicas.
 
-2. **Deterministic Conflict Resolution**: When concurrent operations occur, the CRO's conflict resolution rules ensure that all replicas resolve conflicts in exactly the same way, regardless of the order in which they receive the operations.
+2. **Deterministic Conflict Resolution**: When [concurrent](./concurrency.md) operations occur, the CRO's [conflict](./conflict.md) resolution rules ensure that all replicas resolve conflicts in exactly the same way, regardless of the order in which they receive the operations.
 
 3. **Commutative Merging**: The merge operation is designed to be commutative, meaning that merging hashgraph A with B produces the same result as merging B with A. This property, combined with the sybil-resistant nature of the hashgraph structure, ensures that replicas converge to the same state regardless of the order of synchronization or the presence of malicious actors.
 
