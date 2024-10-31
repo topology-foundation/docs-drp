@@ -27,21 +27,18 @@ This structure ensures that if operation u2 reports u1 as its causal dependency,
 
 <div align="center">
   
-![Hash graph of a CRO](/img/hash_graph.png)
+![Hash graph of a CRO](/static/img/hashgraph_new.png)
 
 **Figure 1:** Hash graph of a CRO.
 </div>
-
-In the example above, vertex `V7` should contain `(u7, {h(V4), h(V5)})`. The set of vertices `{V6, V7, V8}` constitutes the frontier, which are vertices whose operations are currently not dependencies of any other operation. The next vertex, `V9`, should have `{h(V6), h(V7), h(V8)}` as its causal dependencies.
 
 
 # HashGraph Merge
 When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs. Merging might require resolving concurrent operations, but this is out of scope for this article (check out the [concurrency](./concurrency.md) and [conflict](./conflict.md) sections for more details).
 
-Notably, this approach is immune to sybil attacks, allowing CROs to tolerate many sybil actors in the network.
-
 <div align="center">
-  ![Merging hashgraphs](/img/hashgraph_merge.png)
+
+![Merging hashgraphs](/static/img/hashgraph_merge.png)
 
 **Figure 2:** Merging hashgraphs from CRO replica p and q.
 </div>
