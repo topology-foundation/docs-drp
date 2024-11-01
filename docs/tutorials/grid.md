@@ -87,6 +87,7 @@ export class Grid {
     // User all start at 0,0
     this.positions.set(userId, { x: 0, y: 0 });
   }
+
   moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
     // Check if user exist
     const user = [...this.positions.keys()].find((u) => u === userId);
@@ -176,6 +177,44 @@ export class Grid {
 Now let's add in the methods:
 
 ```ts
+  addUser(userId: string) {
+    this._addUser(userId);
+  }
+
+  moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
+    this._moveUser(userId, direction);
+  }
+
+  _addUser(userId: string) {
+    // User all start at 0,0
+    this.positions.set(userId, { x: 0, y: 0 });
+  }
+
+  _moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
+    // Check if user exist
+    const user = [...this.positions.keys()].find((u) => u === userId);
+
+    if (user) {
+      const currentPos = this.getUserPosition(userId);
+      if (currentPos) {
+        switch (direction) {
+          case "UP":
+            currentPos.y += 1;
+            break;
+          case "DOWN":
+            currentPos.y -= 1;
+            break;
+          case "LEFT":
+            currentPos.x -= 1;
+            break;
+          case "RIGHT":
+            currentPos.x += 1;
+            break;
+        }
+      }
+    }
+  }
+
 	resolveConflicts(vertices: Vertex[]): ResolveConflictsType {
 		return { action: ActionType.Nop };
 	}
@@ -190,12 +229,12 @@ Now let's add in the methods:
 			switch (op.type) {
 				case "addUser": {
 					const [userId] = op.value;
-					this.addUser(userId);
+					this._addUser(userId);
 					break;
 				}
 				case "moveUser": {
 					const [userId, direction] = op.value;
-					this.moveUser(userId, direction);
+					this._moveUser(userId, direction);
 					break;
 				}
 			}
@@ -205,6 +244,10 @@ Now let's add in the methods:
 
 Here, the `mergeCallback` method will update the positions the user have locally on their machine to based on the operation received.
 
+Notice that we created additional methods `_addUser` and `_moveUser` and moved from the original methods into them.
+This is because we had define `addUser` and `moveUser` as operations and calling them will add new vertices to the underlying hashgraph,
+which we do not want to happen when `mergeCallback` is called.
+
 We implement `resolveConflicts` to simply return `ActionType.Nop` which tells the `CRO` not to do anything when a conflict is detected. This is done as we expect each user to only be able to move themselves.
 
 Since we want to easily tell users apart, let's add some color to each user based on their user id.
@@ -213,13 +256,17 @@ Since we want to easily tell users apart, let's add some color to each user base
   // ... other methods ...
 
   addUser(userId: string, color: string) {
-	const userColorString = `${userId}:${color}`;
-	// User all start at 0,0
-	// Encode the color as part of the new id
-	this.positions.set(userColorString, { x: 0, y: 0 });
+    this._addUser(userId: string, color: string);
   }
 
-  moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
+  _addUser(userId: string, color: string) {
+    const userColorString = `${userId}:${color}`;
+    // User all start at 0,0
+    // Encode the color as part of the new id
+    this.positions.set(userColorString, { x: 0, y: 0 });
+  }
+
+  _moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
     // Check if user exist
     const userColorString = [...this.positions.keys()].find((u) =>
 		u.startsWith(`${userId}:`),
@@ -264,12 +311,12 @@ Since we want to easily tell users apart, let's add some color to each user base
 			switch (op.type) {
 				case "addUser": {
 					const [userId, color] = op.value; // color added here
-					this.addUser(userId, color);
+					this._addUser(userId, color);
 					break;
 				}
 				case "moveUser": {
 					const [userId, direction] = op.value;
-					this.moveUser(userId, direction);
+					this._moveUser(userId, direction);
 					break;
 				}
 			}
@@ -300,13 +347,21 @@ export class Grid implements CRO {
   }
 
   addUser(userId: string, color: string) {
+    this._addUser(userId: string, color: string);
+  }
+
+  moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
+    this._moveUser(userId, direction);
+  }
+
+  _addUser(userId: string, color: string) {
     const userColorString = `${userId}:${color}`;
     // User all start at 0,0
     // Encode the color as part of the new id
     this.positions.set(userColorString, { x: 0, y: 0 });
   }
 
-  moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
+  _moveUser(userId: string, direction: "UP" | "DOWN" | "LEFT" | "RIGHT") {
     // Check if user exist
     const userColorString = [...this.positions.keys()].find((u) =>
       u.startsWith(`${userId}:`)
@@ -358,12 +413,12 @@ export class Grid implements CRO {
       switch (op.type) {
         case "addUser": {
           const [userId, color] = op.value;
-          this.addUser(userId, color);
+          this._addUser(userId, color);
           break;
         }
         case "moveUser": {
           const [userId, direction] = op.value;
-          this.moveUser(userId, direction);
+          this._moveUser(userId, direction);
           break;
         }
       }
