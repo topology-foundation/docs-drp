@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # CRO
 
-A **CRO** is a **Conflict-free Replicated Object**. It is a programmable object that can be updated concurrently in real-time and subscribed to as a **PubSub** group on an open P2P network.
+A **CRO** is a **Conflict-free Replicated Object**. It is a programmable object that can be updated concurrently in real time and subscribed to as a **PubSub** group on an open P2P network.
 
 Here is a snippet from the pseudocode of defining a CRO:
 ```
@@ -22,7 +22,10 @@ Firstly, we need to define an array of operations that can be applied to the CRO
 
 Pair-wise conflict resolution always analyzes two conflicting operations at a time. Group-wise conflict resolution analyzes all conflicting operations at once. The choice of conflict resolution type depends on the application requirements. 
 
-The `resolveConflicts` function needs to be implemented and is used as the judge to handle conflicting operations. It takes an array of vertices and returns an action. If the `semanticsType` is pair-wise, the array only has two elements. If the action involves multiple vertices, it can also contain the hashes of these vertices.
+The `resolveConflicts` function needs to be implemented and is used as the judge to handle conflicting operations. It takes an array of vertices and returns an _action_. What exactly is an _action_? 
+Action involves dropping (removing) some operations or changing the order of operations. The action is defined as a tuple of two elements: the first element is the action type (drop, swap), and the second element is an array of hashes if we want to act on a larger subset of operations. 
+
+If the `semanticsType` is pair-wise, the `vertices` array only has two elements. In this case, an _action_, among others, can be `dropLeft` (the one earlier in the topological sort), `dropRight` or `Swap` (the order of the two conflicting operations).
 
 Lastly, we need to implement the `mergeCallback` function. The underlying data structure is the [hashgraph](./hashgraph.md). All merging is completed automatically by the hashgraph. The `mergeCallback` function is called after the hashgraph has merged the operations. It is used to notify the application that the merge has been completed, and the final state of the CRO has been updated.
 
@@ -33,7 +36,7 @@ Let's imagine a CRO, which is a set of integers. The operations are add(number) 
 
 ```
 resolveConflicts(vertices: V1, V2): Action {
-    if (V1.opeartion == "add") {
+    if (V1.operation == "add") {
         return Action(drop, V2);
     } else {
         return Action(drop, V1);
