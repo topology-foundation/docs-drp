@@ -5,18 +5,56 @@ sidebar_position: 4
 
 # Conflict
 
-The [**CRO**](./cro.md) state can be affected by [**concurrent**](./concurrency.md) **operations**. If applying these operations in any possible order produces the same state of the object, we do not have to worry about conflicts. Think about a CRO which accepts addition and multiplication as operations. If the initial state is _1_, and we have two **concurrent** operations as below, what is the state of the CRO after applying these operations?
+## What is a conflict?
+The [CRO](./cro.md) state can be affected by [concurrent](./concurrency.md) operations.
+
+If applying these operations in any possible order produces the same CRO state, we do not have to worry about conflicts. If not, we are in conflict territory.
+
+Consider a simple CRO that:
+- has a single number as its state
+- accepts two types of operations: addition & multiplication
+
+If its initial state is 1, and we have two concurrent operations as below, what is its state after applying these operations?
 
 <div align="center">
     ![](/img/concurrency.png)
-
-    **Figure 1:** Hash graph for a single number register CRO that accepts addition and multiplication.
 </div>
-Different execution orders yield:
-- ![](https://latex.codecogs.com/svg.latex?(1+7)\cdot3+2=26)
-- ![](https://latex.codecogs.com/svg.latex?(1\cdot3)+7+2=12) 
 
-This means these operations are not commutative, and they cause a **conflict**. We must define the behavior of the CRO in those situations to make sure every honest replica will arrive at the same state after applying conflicting operations. 
-We need rules to determine what to do with the **conflicting** operations. Some of the operations might be dropped, the rest needs to be ordered in a replicable manner. This is what we call **_conflict resolution_**. In the above example we could define conflict resolution as "multiplication first". No operations are dropped, and multiplication is calculated first. This way, the final state will always be _12_. 
+Different execution orders yield different results:
+- ![](https://latex.codecogs.com/svg.latex?(1+7)\cdot3+2=26)
+- ![](https://latex.codecogs.com/svg.latex?(1\cdot3)+7+2=12)
+
+Why?
+
+The root cause is that these operations are not commutative. When they happen concurrently, a **conflict** ensues.
+
+It is important that we describe the CRO's behavior in case of conflicts. Every honest replica of the CRO would follow such behavior so they all reach the same result.
+
+This behavioral description is also called [concurrency semantics](https://en.wikipedia.org/wiki/Concurrency_semantics).
+
+## Resolving conflicts
+
+We need to set rules for how to handle conflicting operations. These rules are to be followed by every honest replica of the CRO. We call them **conflict resolution rules**.
+
+In resolving a conflict, some of the operations involved might be dropped, while the rest of them might be ordered in a replicable manner.
+
+Recall the example above, where addition and multiplication constitute a conflict. We could define its conflict resolution as "multiplication first":
+- No operations are dropped
+- Multiplication is ordered before addition
+
+This way, the final CRO state will always be 12.
+
+
+## Analogy
+
+Imagine a CRO that is a [pile of sand](https://blog.topology.gg/the-origins-of-topology-from-ledgers-to-sandcastles-part-2/).
+
+We have Alice and Bob, starting from an identical pile.
+
+Alice flattens the pile, while at the same time Bob molds it into a sphere. These operations are conflicting, so what do we do?
+
+A valid rule to resolve this conflict would be "mold first". Molding happens before flattening.
+
+Following the same rule, both Alice and Bob arrive at an identical sand disk.
 
 ---
