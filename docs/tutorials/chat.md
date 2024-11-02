@@ -3,40 +3,83 @@ sidebar_label: 'Chat'
 sidebar_position: 1
 ---
 
+# Chat
+
+## What we'll be building
+
 ![](../../static/img/chat_result.png)
+
+--- 
 
 ## Table of contents
    
-- [Table of contents](#table-of-contents)
-- [What to expect](#what-to-expect)
-- [Configuration](#configuration)
-- [Designing the CRO](#designing-the-cro)
-- [Chat object](#chat-object)
-- [Basic HTML structure](#basic-html-structure)
-- [Driver code](#driver-code)
-- [Handlers](#handlers)
-- [Sending messages](#sending-messages)
-- [Displaying messages](#displaying-messages)
-- [Building and running the application](#building-and-running-the-application)
-- [Code reference](#code-reference)
+- [Chat](#chat)
+	- [What we'll be building](#what-well-be-building)
+	- [Table of contents](#table-of-contents)
+	- [Overview](#overview)
+	- [Scaffolding and configuration](#scaffolding-and-configuration)
+	- [Designing the CRO](#designing-the-cro)
+	- [Chat object](#chat-object)
+	- [Basic HTML structure](#basic-html-structure)
+	- [Driver code](#driver-code)
+	- [Handlers](#handlers)
+	- [Sending messages](#sending-messages)
+	- [Displaying messages](#displaying-messages)
+	- [Building and running the application](#building-and-running-the-application)
+	- [Code reference](#code-reference)
 
-## What to expect
+## Overview
 
 In this tutorial, we will build a simple chat application using a [CRO](../get-started/cro.md) from scratch. The users will be able to create a new chat room and send messages, as well as connect to an existing chat room and fetch the messages that have already been sent.
 
-## Configuration
+## Scaffolding and configuration
 
-For this project, we are going to be using `pnpm` for package management and `vite` for bundling the modules. The exact configuration files can be found in the [repo](https://github.com/topology-foundation/ts-topology/tree/main/examples/chat). Most importantly, include all the Topology modules in `package.json`. 
+For this project, I am going to use vanilla typescript, `pnpm` for package management and `vite` for bundling the modules. This project can be adjusted to use a framework, like `React` or `Vue`. 
 
-If you do not have `pnpm` installed, you can install it by running `npm install -g pnpm`.
+Let's start by scaffolding an application. 
+If you haven't used `pnpm` yet, you can install it and scaffold the project with:
 
-```json
-"dependencies": {
-    "@topology-foundation/blueprints": "0.2.1-0",
-    "@topology-foundation/network": "0.2.1-0",
-    "@topology-foundation/node": "0.2.1-0",
-    "@topology-foundation/object": "0.2.1-0"
-}
+```bash
+npm install -g pnpm;
+pnpm create vite@latest chat --template vanilla-ts
+```
+
+Now, let's add the `topology-foundation` core packages.
+
+```bash
+cd chat;
+pnpm install @topology-foundation/object @topology-foundation/node
+```
+
+In order to make sure that the dependencies build successfully we will also need `vite polyfills`.
+
+```bash
+pnpm i -D vite-plugin-node-polyfills
+```
+
+Then, we need to configure `vite` with `vite.config.mts` put at the root directory:
+
+```ts
+import { defineConfig } from "vite";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
+
+export default defineConfig({
+  build: {
+    target: "esnext",
+  },
+  plugins: [nodePolyfills()],
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "esnext",
+    },
+  },
+});
+```
+
+Last step before we start coding is to remove auto-generated files that we don't need.
+
+```bash
+rm src/counter.ts src/style.css src/typescript.svg src/vite-env.d.ts src/main.ts public/vite.svg; rmdir public
 ```
 
 ## Designing the CRO
@@ -47,7 +90,7 @@ When getting onto building with CROs, it is crucial to figure out the structure 
 
 For this example, we are going to use a Set of type `string`. Let’s implement the `Chat` class, which implements the CRO class inside `src/objects/chat.ts`. We start defining the class of the object with all needed attributes. 
 
-```tsx
+```ts
 export class Chat implements CRO {
 	operations: string[] = ["addMessage"];
 	semanticsType: SemanticsType = SemanticsType.pair;
@@ -59,7 +102,7 @@ And then we implement those functions:
 
 - The constructor, which just assigns an empty set to `messages`
 
-```tsx
+```ts
 constructor() {
 	this.messages = new Set<string>();
 }
@@ -67,7 +110,7 @@ constructor() {
 
 - `_addMessage()`, that adds a new message with additional data to the set of messages
 
-```tsx
+```ts
 private _addMessage(timestamp: string, message: string, nodeId: string): void {
     this.messages.add(`(${timestamp}, ${message}, ${nodeId})`);
 }
@@ -75,7 +118,7 @@ private _addMessage(timestamp: string, message: string, nodeId: string): void {
 
 - `getMessages()`, that returns the set of messages
 
-```tsx
+```ts
 getMessages(): Set<string> {
 	return this.messages;
 }
@@ -83,7 +126,7 @@ getMessages(): Set<string> {
 
 - `resolveConflicts()`, that is required when inheriting from `CRO`, but in this case, we do not have to worry about conflicts, so we can just return an empty action
 
-```tsx
+```ts
 resolveConflicts(vertices: Vertex[]): ResolveConflictsType {
 	return { action: ActionType.Nop };
 }
@@ -91,7 +134,7 @@ resolveConflicts(vertices: Vertex[]): ResolveConflictsType {
 
 - `mergeCallback()`, which is called after a notification from the node that the object has been updated. We have to apply the operations to get the up-to-date state of the object 
 
-```tsx
+```ts
 mergeCallback(operations: Operation[]): void {
 	for (const op of operations) {
 		const args = op.value as string[];
@@ -102,13 +145,13 @@ mergeCallback(operations: Operation[]): void {
 
 ## Basic HTML structure
 
-Having the structure of our CRO implemented, we can create a bare-bones HTML layout defining the main page. It will display the current peer ID, the CRO being connected to, the object peers, an input for the chat room ID and a few buttons to operate. We put it in `public/index.html`. [Code used](https://github.com/topology-foundation/ts-topology/blob/main/examples/chat/index.html).
+Having the structure of our CRO implemented, we can create a bare-bones HTML layout defining the main page. It will display the current peer ID, the CRO being connected to, the object peers, an input for the chat room ID and a few buttons to operate. We put it in `index.html`. [Code used](https://github.com/topology-foundation/ts-topology/blob/main/examples/chat/index.html).
 
 ## Driver code
 
 Now we can start writing the main `src/index.ts` file, that is going to run our application. We commence by defining the global variables. 
 
-```tsx
+```ts
 const node = new TopologyNode();
 let topologyObject: TopologyObject;
 let chatCRO: Chat;
@@ -121,7 +164,7 @@ We define `node` as a new TopologyNode, which is a peer in a network that can be
 
 Let’s start writing the driver code of the application, where we establish the TopologyNode, add a custom message handler to it and define the behaviour for all buttons. 
 
-```tsx
+```ts
 async function main() {
     await node.start();
     render();
@@ -131,7 +174,7 @@ async function main() {
 
 Firstly, we start the `node` (global variable). In doing so, the peer is created and assigned an ID, so we want to display that ID to the user. To keep things tidy, we will create a separate function to reflect the changes in the page, call it `render()`. We locate the elements from the HTML and fill in the information from the global variables.
 
-```tsx
+```ts
 const render = () => {
     const element_peerId = <HTMLDivElement>document.getElementById("peerId");
 	element_peerId.innerHTML = node.networkNode.peerId;
@@ -151,7 +194,7 @@ const render = () => {
 
 We need to define a few handlers for our `node`. First of all, a generic message handler. It is a generic `customGroupMessageHandler` because we are passing an empty string as the `group`. We update `peers`, `discoveryPeers` and reflect the changes.
 
-```tsx
+```ts
 node.addCustomGroupMessageHandler("", (e) => {
 	peers = node.networkNode.getAllPeers();
 	discoveryPeers = node.networkNode.getGroupPeers("topology::discovery");
@@ -161,7 +204,7 @@ node.addCustomGroupMessageHandler("", (e) => {
 
 Now let's implement the logic for creating a `TopologyObject` and connecting to one. When creating, we are passing a new `Chat` object, which is a CRO, and assign the global `chatCRO` variable.
 
-```tsx
+```ts
 button_create.addEventListener("click", async () => {
 	topologyObject = await node.createObject(new Chat());
 	chatCRO = topologyObject.cro as Chat;
@@ -172,7 +215,7 @@ button_create.addEventListener("click", async () => {
 
 When connecting to an existing `TopologyObject`, we are essencially copying the object we want to connect to by creating a new object and syncing by passing its `objectId` and passing `sync` ans `true`. 
 
-```tsx
+```ts
 button_connect.addEventListener("click", async () => {
 	const input: HTMLInputElement = <HTMLInputElement>(
 		document.getElementById("roomInput")
@@ -193,7 +236,7 @@ button_connect.addEventListener("click", async () => {
 
 The `createConnectHandlers()` needs to set up the `node` to receive messages of the `topologyObject`'s pub/sub group. The object stored inside the `node` also needs to subscribe to the object that the user is creating/connecting to.
 
-```tsx
+```ts
 async function createConnectHandlers() {
 	node.addCustomGroupMessageHandler(topologyObject.id, (e) => {
 		if (topologyObject) objectPeers = node.networkNode.getGroupPeers(topologyObject.id);
@@ -210,7 +253,7 @@ async function createConnectHandlers() {
 
 Sending messages is as easy as calling the `addMessage` function of the CRO. We need to check if the CRO is initialised, and if not, alert the user.
 
-```tsx
+```ts
 async function sendMessage(message: string) {
 	const timestamp: string = Date.now().toString();
 	if (!chatCRO) {
@@ -226,7 +269,7 @@ async function sendMessage(message: string) {
 
 Then we can assign the logic to a button.
 
-```tsx
+```ts
 button_send.addEventListener("click", async () => {
 	const input: HTMLInputElement = <HTMLInputElement>(
 		document.getElementById("messageInput")
@@ -246,7 +289,7 @@ button_send.addEventListener("click", async () => {
 
 Let's update the `render()` function to display the current state of the CRO.
 
-```tsx
+```ts
 // If the peer is not connected to a chat room, nothing to display
 if (!chatCRO) return;
 const chat = chatCRO.getMessages();
@@ -283,16 +326,14 @@ To build and run the application locally, you can set up scripts in `package.jso
 "scripts": {
 	"build": "vite build",
 	"clean": "rm -rf dist/ node_modules/",
-	"dev": "vite serve",
-	"start": "ts-node ./src/index.ts"
+	"dev": "vite serve"
 },
 ```
 
 Then, navigate to the parent directory of your project and run the following commands.
 
 ```bash
-pnpm i
-pnpm build
+pnpm build;
 pnpm dev
 ```
 
