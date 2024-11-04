@@ -36,6 +36,8 @@ This structure ensures that if operation u2 reports u1 as its causal dependency,
 # HashGraph Merge
 When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs.
 
+The figure below describes the merge of the hash graphs at nodes P and Q. As depicted in the figure, merge is just the union of a node's hash graph with an incoming peer's hash graph (shown in dotted lines). After the merge is complete, hash graphs at both the nodes P and Q are structurally equivalent. 
+
 <div align="center">
 
 ![Merging hashgraphs](/img/hashgraph_merge.png)
