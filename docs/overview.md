@@ -12,13 +12,20 @@ title: ""
 
 ## Overview
 
-### TODO
-- 1 sentence explaining what topology protocol is
-- 1 sentence explaining what topology protocol is useful for
+Topology Protocol is a distributed system protocol. It aims to **make the Internet real-time by default**.
+
+Key properties of the protocol:
+- **Low Latency**: Essential for real-time interactions
+- **Decentralization**: Reduces single points of failure
+- **Scalability**: Handles large amounts of concurrent users, and reduces coupling between independent applications
+- **Eventual Consistency**: any change to an application is reflected in all its participants as fast as the network conditions permit
+- **Security**: Robust against Byzantine actors - those who deviate from the protocol whether intentionally or not
+
+It is useful for making applications where many users interact in real time. Examples include video games, social media, and collaborative tools.
 
 ## Repositories
 
-- The official [TypeScript implementation](https://github.com/topology-foundation/ts-topology) of the protocol
+- Official [TypeScript implementation](https://github.com/topology-foundation/ts-topology) of the protocol
 - Protocol [whitepaper](https://github.com/topology-foundation/paper)
 - Protocol [specification](https://github.com/topology-foundation/specs)
 
