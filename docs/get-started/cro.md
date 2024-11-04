@@ -5,10 +5,19 @@ sidebar_position: 5
 
 # CRO
 
-A **CRO** is a **Conflict-free Replicated Object**. It is a programmable object that can be updated concurrently in real time and subscribed to as a **PubSub** group on an open P2P network.
+## Overview
 
-Here is a snippet from the pseudocode of defining a CRO:
-```
+A **CRO** is a **Conflict-free Replicated Object**.
+
+It is a programmable object with two core capabilities:
+
+1. **Real-time Multiplayer**: CRO can be updated concurrently in real time.
+2. **P2P Propagation**: Each CRO can be identified and joined as a [PubSub group](https://docs.libp2p.io/concepts/pubsub/overview/) on an open P2P network. Each CRO has its own [P2P overlay](https://docs.libp2p.io/concepts/appendix/glossary/#overlay).
+
+## Structure
+
+Here is a pseudocode snippet defining a CRO:
+```Javascript
 type CRO {
     operations: string[];
     semanticsType: SemanticsType = {pair-wise or group-wise};
@@ -18,30 +27,95 @@ type CRO {
 ```
 Let's break it down.
 
-Firstly, we need to define an array of operations that can be applied to the CRO. Then we need to specify the semantics ([conflict resolution rules](./conflict.md)) of the CRO. Currently there are two types of conflict resolution: pair-wise and group-wise.
+### operations
 
-Pair-wise conflict resolution always analyzes two conflicting operations at a time. Group-wise conflict resolution analyzes all conflicting operations at once. The choice of conflict resolution type depends on the application requirements. 
+We need to define what `operations` can be applied to the CRO. Each operation is identified by its name, which is a string.
 
-The `resolveConflicts` function needs to be implemented and is used as the judge to handle conflicting operations. It takes an array of vertices and returns an _action_. What exactly is an _action_? 
-Action involves dropping (removing) some operations or changing the order of operations. The action is defined as a tuple of two elements: the first element is the action type (drop, swap), and the second element is an array of hashes if we want to act on a larger subset of operations. 
+### semanticsType
 
-If the `semanticsType` is pair-wise, the `vertices` array only has two elements. In this case, an _action_, among others, can be `dropLeft` (the one earlier in the topological sort), `dropRight` or `Swap` (the order of the two conflicting operations).
+We need to specify `semanticsType`, the **type** of its **concurrency semantics** ([conflict resolution rules](./conflict.md)).
 
-Lastly, we need to implement the `mergeCallback` function. The underlying data structure is the [hashgraph](./hashgraph.md). All merging is completed automatically by the hashgraph. The `mergeCallback` function is called after the hashgraph has merged the operations. It is used to notify the application that the merge has been completed, and the final state of the CRO has been updated.
+Currently there are two types of conflict resolution: pair-wise and group-wise.
 
-Now let's take a look at a tangible example of **conflicting** operations in a CRO.
-Let the CRO be a [pile of sand](https://blog.topology.gg/the-origins-of-topology-from-ledgers-to-sandcastles-part-2/). We have Alice and Bob, starting from an identical pile. Then Alice flattens the pile, but Bob molds a sphere. The operations are conflicting, so what do we do? A logical conflict resolution behaviour in this situation would be to mold the pile into a sphere first and then flatten it out for both Alice and Bob. 
+- The pair-wise type always analyzes two conflicting operations at a time.
+- The group-wise type analyzes all conflicting operations at once
 
-Let's imagine a CRO, which is a set of integers. The operations are add(number) and remove(number). If Alice adds 5 and Bob removes 5 [concurrently](./concurrency.md), we can define conflict resolution mechanism as "addition wins". 
+The choice here depends on the application requirements.
 
+### resolveConflicts
+
+The `resolveConflicts` function implements the CRO's conflict resolution rules.
+
+The function
+- takes a **vertex array**, each vertex containing one operation
+- returns an **Action** to be performed on the vertex array
+
+What exactly is an Action? An Action either drops some operations or changes the order of them.
+
+The example section below demonstrates the use of Action.
+
+### mergeCallback
+
+Lastly, we need to implement the `mergeCallback` function.
+
+CRO uses [hashgraph](./hashgraph.md) as its causal log of operations. Hashgraph incorporates new operations by merging them into itself. Every time this happens, `mergeCallback` function is called. Its purpose is to recompute the CRO state using the updated hashgraph.
+
+The function
+- takes a sequence of operations
+- returns nothing
+
+The sequence of operations came from [topologically sorting](https://en.wikipedia.org/wiki/Topological_sorting) the hashgraph while following the CRO's own conflict resolution rules.
+
+## Example
+
+Let's revisit our single-number CRO that accepts addition and multiplication from [the previous section](./conflict.md).
+
+Its `operations` would be
+
+```Javascript
+['addition', 'multiplication']
 ```
-resolveConflicts(vertices: V1, V2): Action {
-    if (V1.operation == "add") {
-        return Action(drop, V2);
-    } else {
-        return Action(drop, V1);
+
+Its `semanticsType` would be
+
+```Javascript
+SemanticsType.pair
+```
+
+Using "multiplication first" to resolve conflicts, its `resolveConflicts` would look like
+
+```Javascript
+resolveConflicts(vertices){
+    // if the first vertex is an addition, swap it with the second vertex
+    // otherwise, do nothing
+    if (vertices[0].operation == 'addition') {
+        return Action(ActionType.Swap)
+    }
+    else {
+        return Action(ActionType.Nop)
     }
 }
 ```
 
----
+Finally, `mergeCallback` would compute the CRO state given its hashgraph:
+
+```Javascript
+mergeCallback(operations){
+    // reset CRO state
+    this.state = 0
+
+    // iterate through operations and apply them
+    for (const o of operations) {
+        switch (o.type) {
+            case "addition": {
+                this.state += o.value
+                break
+            }
+            case "multiplication": {
+                this.state *= o.value
+                break
+            }
+        }
+    }
+}
+```
