@@ -34,7 +34,7 @@ This structure ensures that if operation u2 reports u1 as its causal dependency,
 
 
 # HashGraph Merge
-When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs. Merging might require resolving concurrent operations, but this is out of scope for this article (check out the [concurrency](./concurrency.md) and [conflict](./conflict.md) sections for more details).
+When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs.
 
 <div align="center">
 
