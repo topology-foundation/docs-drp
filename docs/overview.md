@@ -23,6 +23,8 @@ Key properties of the protocol:
 
 It is useful for making applications where many users interact in real time. Examples include video games, social media, and collaborative tools.
 
+Visit [Get Started](./get-started/what-is-topology.md) for the essential concepts behind the protocol, or [Tutorials](./tutorials/chat.md) to make CRO applications from scratch.
+
 ## Repositories
 
 - Official [TypeScript implementation](https://github.com/topology-foundation/ts-topology) of the protocol
