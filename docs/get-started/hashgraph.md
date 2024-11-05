@@ -5,15 +5,7 @@ sidebar_position: 3
 
 # Hash Graph
 
-## TODO
-- Explain the high-level role of hash graph (a history of everything that happens to a CRO)
-- Give one simple, friendly example of a hash graph
-- Explain graph merges
-- Explain eventual consistency
-- Optional: explain light-cone
-
----
-# Overview
+## Overview
 
 Hashgraph is the secret sauce in CROs. It allows replicas to progress independently without needing to coordinate with each other at every step, which is a requirement in traditional consensus systems. Despite this independence, Hashgraph ensures that all replicas ultimately achieve the same final state. At its core, hashgraph encodes the operation history in a directed acyclic graph (DAG) where:
 - Edges represent causal dependency relationships between operations
@@ -33,7 +25,7 @@ This structure ensures that if operation u2 reports u1 as its causal dependency,
 </div>
 
 
-# HashGraph Merge
+## HashGraph Merge
 When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs.
 
 The figure below describes the merge of the hash graphs at nodes P and Q. As depicted in the figure, merge is just the union of a node's hash graph with an incoming peer's hash graph (shown in dotted lines). After the merge is complete, hash graphs at both the nodes P and Q are structurally equivalent. 
@@ -45,7 +37,7 @@ The figure below describes the merge of the hash graphs at nodes P and Q. As dep
 **Figure 2:** Merging hashgraphs from CRO replicas P and Q.
 </div>
 
-# Eventual Consistency
+## Eventual Consistency
 
 Eventual consistency is a fundamental property of CROs that guarantees all replicas will eventually reach the same state, regardless of the order in which they receive and process operations. This is achieved through several key mechanisms:
 
