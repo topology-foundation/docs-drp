@@ -9,10 +9,10 @@ sidebar_position: 1
 
 ![](../../static/img/chat_result.png)
 
---- 
+---
 
 ## Table of contents
-   
+
 - [Chat](#chat)
 	- [What we'll be building](#what-well-be-building)
 	- [Table of contents](#table-of-contents)
@@ -34,9 +34,9 @@ In this tutorial, we will build a simple chat application using a [CRO](../get-s
 
 ## Scaffolding and configuration
 
-For this project, I am going to use vanilla typescript, `pnpm` for package management and `vite` for bundling the modules. This project can be adjusted to use a framework, like `React` or `Vue`. 
+For this project, I am going to use vanilla typescript, `pnpm` for package management and `vite` for bundling the modules. This project can be adjusted to use a framework, like `React` or `Vue`.
 
-Let's start by scaffolding an application. 
+Let's start by scaffolding an application.
 If you haven't used `pnpm` yet, you can install it and scaffold the project with:
 
 ```bash
@@ -88,7 +88,7 @@ When getting onto building with CROs, it is crucial to figure out the structure 
 
 ## Chat object
 
-For this example, we are going to use a Set of type `string`. Let’s implement the `Chat` class, which implements the CRO class inside `src/objects/chat.ts`. We start defining the class of the object with all needed attributes. 
+For this example, we are going to use a Set of type `string`. Let’s implement the `Chat` class, which implements the CRO class inside `src/objects/chat.ts`. We start defining the class of the object with all needed attributes.
 
 ```ts
 export class Chat implements CRO {
@@ -132,7 +132,7 @@ resolveConflicts(vertices: Vertex[]): ResolveConflictsType {
 }
 ```
 
-- `mergeCallback()`, which is called after a notification from the node that the object has been updated. We have to apply the operations to get the up-to-date state of the object 
+- `mergeCallback()`, which is called after a notification from the node that the object has been updated. We have to apply the operations to get the up-to-date state of the object
 
 ```ts
 mergeCallback(operations: Operation[]): void {
@@ -149,7 +149,7 @@ Having the structure of our CRO implemented, we can create a bare-bones HTML lay
 
 ## Driver code
 
-Now we can start writing the main `src/index.ts` file, that is going to run our application. We commence by defining the global variables. 
+Now we can start writing the main `src/index.ts` file, that is going to run our application. We commence by defining the global variables.
 
 ```ts
 const node = new TopologyNode();
@@ -162,7 +162,7 @@ let objectPeers: string[] = [];
 
 We define `node` as a new TopologyNode, which is a peer in a network that can be connected to other nodes and exchange messages with them. `chatCRO` is an instance of the chat class that we created earlier. Then we define empty arrays that will be used to store, in order, all peers connected to the network, all peers that are in the `topology::discovery` pub/sub group, and peers that are connected to the same object as the current peer.
 
-Let’s start writing the driver code of the application, where we establish the TopologyNode, add a custom message handler to it and define the behaviour for all buttons. 
+Let’s start writing the driver code of the application, where we establish the TopologyNode, add a custom message handler to it and define the behaviour for all buttons.
 
 ```ts
 async function main() {
@@ -211,9 +211,9 @@ button_create.addEventListener("click", async () => {
 	// TODO : createConnectHandlers();
 	render();
 });
-``` 
+```
 
-When connecting to an existing `TopologyObject`, we are essencially copying the object we want to connect to by creating a new object and syncing by passing its `objectId` and passing `sync` ans `true`. 
+When connecting to an existing `TopologyObject`, we are essencially copying the object we want to connect to by creating a new object and syncing by passing its `objectId` and passing `sync` ans `true`.
 
 ```ts
 button_connect.addEventListener("click", async () => {
@@ -340,3 +340,7 @@ pnpm dev
 ## Code reference
 
 The full code can be found under [ts-topology/examples/chat](https://github.com/topology-foundation/ts-topology/tree/main/examples/chat).
+
+---
+
+Page last updated: November 2, 2024

@@ -12,18 +12,7 @@ title: ""
 
 ## Overview
 
-Topology Protocol is a distributed system protocol. It aims to **make the Internet real-time by default**.
-
-Key properties of the protocol:
-- **Low Latency**: Essential for real-time interactions
-- **Decentralization**: Reduces single points of failure
-- **Scalability**: Handles large amounts of concurrent users, and reduces coupling between independent applications
-- **Eventual Consistency**: any change to an application is reflected in all its participants as fast as the network conditions permit
-- **Security**: Robust against Byzantine actors - those who deviate from the protocol whether intentionally or not
-
-It is useful for making applications where many users interact in real time. Examples include video games, social media, and collaborative tools.
-
-Visit [Get Started](./get-started/what-is-topology.md) for the essential concepts behind the protocol, or [Tutorials](./tutorials/chat.md) to make CRO applications from scratch.
+This documentation helps you build with Topology. Visit [Get Started](./get-started/what-is-topology.md) for the essential concepts behind Topology, or [Tutorials](./tutorials/chat.md) for building applications on Topology from scratch.
 
 ## Repositories
 
@@ -39,3 +28,7 @@ If you are curious and want to know more about Topology, join our community:
 - [Telegram](https://t.me/topologyfrens)
 - [Discord](https://discord.gg/GUDGzBP5mn)
 - [Website](https://topology.gg/)
+
+---
+
+Page last updated: November 8, 2024

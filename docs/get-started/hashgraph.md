@@ -18,7 +18,7 @@ More formally, each vertex can be defined as a tuple (u, D), where:
 This structure ensures that if operation u2 reports u1 as its causal dependency, then u2 must have happened after u1. By using a deterministic conflict resolution heuristic defined in the CRO, the union (or merging in topology's parlance) of hashgraphs is order-agnostic -- meaning the final state is the same even if different replicas merge hashgraphs from their replica peers in different orders.
 
 <div align="center">
-  
+
 ![Hash graph of a CRO](/img/hashgraph_new.png)
 
 **Figure 1:** Hash graph of a CRO.
@@ -28,7 +28,7 @@ This structure ensures that if operation u2 reports u1 as its causal dependency,
 ## HashGraph Merge
 When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs.
 
-The figure below describes the merge of the hash graphs at nodes P and Q. As depicted in the figure, merge is just the union of a node's hash graph with an incoming peer's hash graph (shown in dotted lines). After the merge is complete, hash graphs at both the nodes P and Q are structurally equivalent. 
+The figure below describes the merge of the hash graphs at nodes P and Q. As depicted in the figure, merge is just the union of a node's hash graph with an incoming peer's hash graph (shown in dotted lines). After the merge is complete, hash graphs at both the nodes P and Q are structurally equivalent.
 
 <div align="center">
 
@@ -53,3 +53,7 @@ For example, consider three replicas (R1, R2, and R3) that receive operations in
 - R3 receives operations in order: C -> A -> B
 
 Despite these different orderings, after all replicas have synchronized with each other, they will all converge to the same final state. This convergence is guaranteed by the mathematical properties of the hashgraph structure, the deterministic nature of the conflict resolution mechanisms, and the robust causal dependency tracking built into the vertex structure.
+
+---
+
+Page last updated: November 5, 2024
