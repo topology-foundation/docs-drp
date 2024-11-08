@@ -1121,3 +1121,12 @@ This will start one instance at http://localhost:5713 and another at http://loca
 ![grid example gif](imgs/grid-2d-example.gif)
 
 Congratulations, you've have completed the Grid 2D tutorial. If you want to learn more about CROs and Topology, do explore the rest of our documentation!
+
+
+## Code reference
+
+The full code can be found under [ts-topology/examples/grid](https://github.com/topology-foundation/ts-topology/tree/main/examples/grid).
+
+---
+
+Page last updated: November 2, 2024

@@ -44,7 +44,6 @@ Recall the example above, where addition and multiplication constitute a conflic
 
 This way, the final CRO state will always be 12.
 
-
 ## Analogy
 
 Imagine a CRO that is a [pile of sand](https://blog.topology.gg/the-origins-of-topology-from-ledgers-to-sandcastles-part-2/).
@@ -57,4 +56,10 @@ A valid rule to resolve this conflict would be "mold first". Molding happens bef
 
 Following the same rule, both Alice and Bob arrive at an identical sand disk.
 
+## Further Reading
+- [When to use a CRDT-based database](https://www.infoworld.com/article/2256888/when-to-use-a-crdt-based-database.html)
+- [crdt.tech](https://crdt.tech/)
+
 ---
+
+Page last updated: November 8, 2024

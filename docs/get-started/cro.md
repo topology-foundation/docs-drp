@@ -119,3 +119,10 @@ mergeCallback(operations){
     }
 }
 ```
+
+## Further Reading
+- [Documentation of the CRO interface](https://topology-foundation.github.io/ts-topology/interfaces/_topology_foundation_object.CRO.html)
+
+---
+
+Page last updated: November 8, 2024
