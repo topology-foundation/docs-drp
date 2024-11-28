@@ -3,7 +3,7 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-	title: 'Topology Documentation',
+	title: 'DRP Documentation',
 	tagline: 'Building distributed real-time applications',
 	favicon: 'img/favicon.ico',
 
@@ -44,7 +44,7 @@ const config: Config = {
 	themeConfig: {
 		image: 'https://avatars.githubusercontent.com/u/157637200',
 		navbar: {
-			title: 'Topology Documentation',
+			title: 'DRP Documentation',
 			logo: {
 				alt: 'topology_logo',
 				src: 'https://avatars.githubusercontent.com/u/157637200',

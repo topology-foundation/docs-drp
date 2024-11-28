@@ -12,7 +12,7 @@ title: ""
 
 ## Overview
 
-This documentation helps you build with Topology. Visit [Get Started](./get-started/what-is-topology.md) for the essential concepts behind Topology, or [Tutorials](./tutorials/chat.md) for building applications on Topology from scratch.
+This documentation helps you build with DRP. Visit [Get Started](./get-started/what-is-drp.md) for the essential concepts behind DRP, or [Tutorials](./tutorials/chat.md) for building applications with DRP from scratch.
 
 ## Repositories
 
@@ -22,7 +22,7 @@ This documentation helps you build with Topology. Visit [Get Started](./get-star
 
 ## Community
 
-If you are curious and want to know more about Topology, join our community:
+If you are curious and want to know more about DRP, join our community:
 
 - [X](https://x.com/topology_gg)
 - [Telegram](https://t.me/topologyfrens)
@@ -31,4 +31,4 @@ If you are curious and want to know more about Topology, join our community:
 
 ---
 
-Page last updated: November 8, 2024
+Page last updated: November 27, 2024

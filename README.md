@@ -1,4 +1,4 @@
-# Topology Protocol Documentation
+# DRP Documentation
 
 This website is built using [Docusaurus](https://docusaurus.io/).
 

@@ -5,32 +5,45 @@ sidebar_position: 2
 
 # Concurrency
 
-## Causal Ordering
+Concurrency is the key capability DRP unlocks.
 
-In a distributed system, **causality** refers to how operations on different machines are related, where one operation
-leads directly to another.
+Concurrency means "at the same time". Multiple computations are happening at the same time? They are concurrent. Multiple events occurred at the same time? They are concurrent.
 
-In simple terms, if one operation needs to happen before another, we say there is a causal relationship between them.
+To understand concurrency more precisely, we must first understand **causality** from the distributed systems standpoint.
 
-For example, imagine Machine A sends a message to Machine B using a CRO. Here, sending the message on Machine A (Operation A) causes Machine B to receive it (Operation B), creating a causal link between the two operations. Causality in this context helps maintain the correct order of operations, ensuring that machines communicate consistently and achieve the same results.
+## Causally dependent (A → B)
 
-Notably, this ordering only guarantees operations with causal dependency, making it a partial ordering. But what about operations that don’t have such relationships? Let’s explore that next.
+In distributed systems, we can understand causality as a kind of *relation* between operations.
+
+If operation B was performed *with the knowledge of* operation A, we say:
+1. A and B are causally related.
+2. B is causally dependent on A.
+
+We use **A → B** to describe this relation.
+
+The simplest example happens in a single-threaded machine. The machine performs operation A, then operation B. B *happened after* A. B is causally dependent on A.
+
+Another example: Alice and Bob each runs a machine connected by the Internet. Alice's machine performs operation A, which travels through the wire to Bob's machine. Bob's machine sees A and performs operation B. In this case, B is also causally dependent on A.
+
+## Causally independent (A // B)
+
+What happens if operation B was performed *without the knowledge of* A?
+
+We say A and B are causally independent. They are **concurrent**.
+
+We use **A // B** to describe this relation.
+
+Going back to Alice and Bob, imagine Alice's machine performs operation A. At roughly the same time, Bob's machine performs operation B with no knowledge of A.
 
 ## Concurrency
 
-When two operations are not causally related, we say they are indepedent or **concurrent**.
+With concurrency, DRP applications process operations independently and simultaneously, making these applications highly responsive.
 
-Two operations are concurrent if neither can causally affect the other, meaning they occur independently without any cause-and-effect relationship. This can be visualized as two parallel lines that never intersect, representing operations that proceed without influencing each other’s states.
-
-For instance, if Machine A sends message X and Machine B sends message Y independently in a CRO, these operations are concurrent as long as neither message relies on the receipt of the other. Machines handle such concurrent operations through their own partial ordering.
-
-Concurrency is crucial in the topology protocol because it allows for greater scalability and efficiency in distributed systems. By allowing independent operations, it reduces communication overhead without requiring global synchronization. This approach allows systems to process more operations simultaneously, significantly improving performance and responsiveness.
-
-A real-world example is a multiplayer game, where Player A’s movement and Player B’s item collection occur concurrently, as neither action depends on the other. This parallel handling ensures faster responses, avoids global ordering delays, and enhances the overall gaming experience.
+Take multiplayer games as an example. In such a game, one player can move around while another player picks up an item concurrently. The game handles these operations independently, completely avoiding global synchronization. As a result, the game feels much more alive.
 
 ## Further Reading
 - [Time, Clocks, and the Ordering of Events in a Distributed System](https://lamport.azurewebsites.net/pubs/time-clocks.pdf)
 
 ---
 
-Page last updated: November 8, 2024
+Page last updated: November 28, 2024
