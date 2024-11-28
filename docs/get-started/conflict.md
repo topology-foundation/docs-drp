@@ -5,12 +5,14 @@ sidebar_position: 4
 
 # Conflict
 
+Conflict resolution is key to DRP's real time capability.
+
 ## What is a conflict?
-The [CRO](./cro.md) state can be affected by [concurrent](./concurrency.md) operations.
+The state of a [DRP program](./drp-program.md) can be affected by [concurrent](./concurrency.md) operations.
 
-If applying these operations in any possible order produces the same CRO state, we do not have to worry about conflicts. If not, we are in conflict territory.
+If applying these operations in any possible order produces the same program state, we do not have to worry about **conflicts**. If not, we are in conflict territory.
 
-Consider a simple CRO that:
+Consider a simple DRP program that:
 - has a single number as its state
 - accepts two types of operations: addition & multiplication
 
@@ -26,15 +28,15 @@ Different execution orders yield different results:
 
 Why?
 
-The root cause is that these operations are not commutative. When they happen concurrently, a **conflict** ensues.
+The root cause is that these operations do not commute. When they happen concurrently, a **conflict** occurs.
 
-It is important that we describe the CRO's behavior in case of conflicts. Every honest replica of the CRO would follow such behavior so they all reach the same result.
+It is important that we describe the program's behavior in case of conflicts. Every user in the same DRP program would follow the same behavior so they all reach the same resulting state.
 
 This behavioral description is also called [concurrency semantics](https://en.wikipedia.org/wiki/Concurrency_semantics).
 
 ## Resolving conflicts
 
-We need to set rules for how to handle conflicting operations. These rules are to be followed by every honest replica of the CRO. We call them **conflict resolution rules**.
+We need to set rules for how to handle conflicts. These rules are to be followed by every honest user of a DRP program. We call them **conflict resolution rules**.
 
 In resolving a conflict, some of the operations involved might be dropped, while the rest of them might be ordered in a replicable manner.
 
@@ -42,11 +44,11 @@ Recall the example above, where addition and multiplication constitute a conflic
 - No operations are dropped
 - Multiplication is ordered before addition
 
-This way, the final CRO state will always be 12.
+This way, the final DRP program state will always be 12.
 
 ## Analogy
 
-Imagine a CRO that is a [pile of sand](https://blog.topology.gg/the-origins-of-topology-from-ledgers-to-sandcastles-part-2/).
+Imagine a DRP program that is a [pile of sand](https://blog.topology.gg/the-origins-of-topology-from-ledgers-to-sandcastles-part-2/).
 
 We have Alice and Bob, starting from an identical pile.
 
@@ -62,4 +64,4 @@ Following the same rule, both Alice and Bob arrive at an identical sand disk.
 
 ---
 
-Page last updated: November 8, 2024
+Page last updated: November 28, 2024

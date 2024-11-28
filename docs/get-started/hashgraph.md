@@ -1,59 +1,49 @@
 ---
-sidebar_label: '3. Hash Graph'
+sidebar_label: '3. Hashgraph'
 sidebar_position: 3
 ---
 
-# Hash Graph
+# Hashgraph
 
-## Overview
+Hashgraph is the data structure underlying every DRP program.
 
-Hashgraph is the secret sauce in CROs. It allows replicas to progress independently without needing to coordinate with each other at every step, which is a requirement in traditional consensus systems. Despite this independence, Hashgraph ensures that all replicas ultimately achieve the same final state. At its core, hashgraph encodes the operation history in a directed acyclic graph (DAG) where:
-- Edges represent causal dependency relationships between operations
-- Vertices contain both the operations and the hashes of their causal dependencies
+## Purpose
 
-More formally, each vertex can be defined as a tuple (u, D), where:
-- u is the operation
-- D is the set of hashed vertices that are its causal dependencies
+Hashgraph serves as the **operation log** of a DRP program, recording both the operations that have occurred and the causal relationship among them. An operation is an update (write) on the program state.
 
-This structure ensures that if operation u2 reports u1 as its causal dependency, then u2 must have happened after u1. By using a deterministic conflict resolution heuristic defined in the CRO, the union (or merging in topology's parlance) of hashgraphs is order-agnostic -- meaning the final state is the same even if different replicas merge hashgraphs from their replica peers in different orders.
+Every user in a DRP program keeps a copy (replica) of the program's hashgraph. The client application running on the user's machine:
+- reads this hashgraph for the state of the DRP program;
+- writes to the DRP program by appending new operations to its hashgraph.
+
+## Structure
+
+Hashgraph is a **directed acyclic graph** (DAG) where:
+- Vertices contain both the operations and the hashes of the vertices they causally depend on. Formally, each vertex *v* can be defined as a tuple *v = (u, D)*:
+    - *u* is an update operation
+    - *D* is the set of hashed vertices that are *v*'s causal dependencies
+- Edges represent causal dependencies among the operations
 
 <div align="center">
-
 ![Hash graph of a CRO](/img/hashgraph_new.png)
 
-**Figure 1:** Hash graph of a CRO.
+**Figure 1:** An example of hashgraph.
 </div>
 
 
-## HashGraph Merge
-When two nodes synchronize their operation histories of the same CRO, they effectively merge their hash graphs. The merge operation performs the union of hashgraphs.
+## Merging
 
-The figure below describes the merge of the hash graphs at nodes P and Q. As depicted in the figure, merge is just the union of a node's hash graph with an incoming peer's hash graph (shown in dotted lines). After the merge is complete, hash graphs at both the nodes P and Q are structurally equivalent.
+Picture Alice and Bob in the same DRP program. Each of them has a copy of the program's hashgraph. Each of them is updating their own copy locally.
+
+When Alice and Bob synchronize with each other, their hashgraphs are **merged**. In math language, the merging of two hashgraphs is their union.
+
+The figure below shows the merge of hashgraphs at nodes P and Q.
 
 <div align="center">
-
 ![Merging hashgraphs](/img/hashgraph_merge.png)
 
-**Figure 2:** Merging hashgraphs from CRO replicas P and Q.
+**Figure 2:** Merging two hashgraphs.
 </div>
-
-## Eventual Consistency
-
-Eventual consistency is a fundamental property of CROs that guarantees all replicas will eventually reach the same state, regardless of the order in which they receive and process operations. This is achieved through several key mechanisms:
-
-1. **Causal History Preservation**: The hashgraph structure maintains the complete causal history of operations through its (u, D) vertex structure, ensuring that causally related operations are always processed in the correct order across all replicas.
-
-2. **Deterministic Conflict Resolution**: When [concurrent](./concurrency.md) operations occur, the CRO's [conflict](./conflict.md) resolution rules ensure that all replicas resolve conflicts in exactly the same way, regardless of the order in which they receive the operations.
-
-3. **Commutative Merging**: The merge operation is designed to be commutative, meaning that merging hashgraph A with B produces the same result as merging B with A. This property, combined with the sybil-resistant nature of the hashgraph structure, ensures that replicas converge to the same state regardless of the order of synchronization or the presence of malicious actors.
-
-For example, consider three replicas (R1, R2, and R3) that receive operations in different orders:
-- R1 receives operations in order: A -> B -> C
-- R2 receives operations in order: B -> C -> A
-- R3 receives operations in order: C -> A -> B
-
-Despite these different orderings, after all replicas have synchronized with each other, they will all converge to the same final state. This convergence is guaranteed by the mathematical properties of the hashgraph structure, the deterministic nature of the conflict resolution mechanisms, and the robust causal dependency tracking built into the vertex structure.
 
 ---
 
-Page last updated: November 5, 2024
+Page last updated: November 28, 2024
