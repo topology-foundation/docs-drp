@@ -23,7 +23,6 @@ type DRPObject {
     operations: string[];
     semanticsType: SemanticsType = {pair-wise or group-wise};
     resolveConflicts: (vertices: Vertex[]) returns Action;
-    mergeCallback: (operations: Operation[])
 }
 ```
 Let's break it down.
@@ -55,19 +54,6 @@ What exactly is an Action? An Action either drops some operations or changes the
 
 The example section below demonstrates the use of Action.
 
-### mergeCallback
-
-Lastly, we need to implement the `mergeCallback` function.
-
-A program's [hashgraph](./hashgraph.md) undergoes merge when it receives new operations coming from remote users. Every time this happens, `mergeCallback` function is called. Its purpose is to recompute the program state from the updated hashgraph.
-
-The function
-- takes a sequence of operations
-- mutates the program state in-place
-- returns nothing
-
-The sequence of operations came from [topologically sorting](https://en.wikipedia.org/wiki/Topological_sorting) the hashgraph while following the program's own conflict resolution rules.
-
 ## Example
 
 Let's revisit our single-number program that accepts addition and multiplication from [the previous section](./conflict.md).
@@ -95,29 +81,6 @@ resolveConflicts(vertices){
     }
     else {
         return Action(ActionType.Nop)
-    }
-}
-```
-
-Finally, `mergeCallback` would compute the program state given its hashgraph:
-
-```Javascript
-mergeCallback(operations){
-    // reset program state
-    this.state = 0
-
-    // iterate through operations and apply them
-    for (const o of operations) {
-        switch (o.type) {
-            case "addition": {
-                this.state += o.value
-                break
-            }
-            case "multiplication": {
-                this.state *= o.value
-                break
-            }
-        }
     }
 }
 ```
