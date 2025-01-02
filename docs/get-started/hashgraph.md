@@ -21,7 +21,7 @@ Every user in a DRP program keeps a copy (replica) of the program's hashgraph. T
 ## Structure
 
 Hashgraph is a *directed acyclic graph* (DAG), where:
-- Vertices contain both the operations and the hashes of the vertices they causally depend on. Formally, each vertex $v$ can be defined as a tuple *v = (u, D)*:
+- Vertices contain both the operations and the hashes of the vertices they causally depend on. Formally, each vertex *v* can be defined as a tuple *v = (u, D)*:
     - *u* is an update operation
     - *D* is the set of hashed vertices that are *v*'s causal dependencies
 - Edges represent causal dependencies among the operations
