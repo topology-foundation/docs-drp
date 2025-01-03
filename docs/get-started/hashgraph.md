@@ -38,7 +38,7 @@ A hasgraph may look like this:
 flowchart LR
     id1((A)):::large --> id2((B)):::large --> id3((C)):::large --> id4((D)):::frontier
 	id2((B)):::large --> id5((J)):::large --> id6((K)):::large --> id7((L)):::frontier
-    classDef frontier fill:#f96, padding:10px
+    classDef frontier fill:#f96, padding:15px
 	classDef large padding:15px
 ```
 
@@ -56,7 +56,7 @@ flowchart LR
 	id2((B)):::large --> id5((J)):::large --> id6((K)):::large --> id7((L)):::frontier
 	id4((D)):::large --> id8((E)):::frontier
 	id5((J)):::large --> id8((E)):::frontier
-    classDef frontier fill:#f96, padding:10px
+    classDef frontier fill:#f96, padding:15px
 	classDef large padding:15px
 ```
 
@@ -78,7 +78,7 @@ flowchart LR
 	id2((B)):::large --> id5((J)):::large --> id6((K)):::large --> id7((L)):::frontier
 	id4((D)):::large --> id8((E)):::frontier
 	id5((J)):::large --> id8((E)):::frontier
-    classDef frontier fill:#f96, padding:10px
+    classDef frontier fill:#f96, padding:15px
 	classDef large padding:15px
 ```
 
@@ -88,7 +88,7 @@ and
 flowchart LR
     id1((A)):::large --> id2((B)):::large --> id3((F)):::large --> id4((G)):::frontier
 	id2((B)):::large --> id5((J)):::large --> id6((K)):::frontier
-    classDef frontier fill:#f96, padding:10px
+    classDef frontier fill:#f96, padding:15px
 	classDef large padding:15px
 ```
 
@@ -101,7 +101,7 @@ flowchart LR
 	id2((B)):::large --> id9((F)):::large --> id10((G)):::frontier
 	id4((D)):::large --> id8((E)):::frontier
 	id5((J)):::large --> id8((E)):::frontier
-    classDef frontier fill:#f96, padding:10px
+    classDef frontier fill:#f96, padding:15px
 	classDef large padding:15px
 ```
 

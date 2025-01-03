@@ -16,11 +16,16 @@ Consider a simple DRP program that:
 - has a single number as its state
 - accepts two types of operations: addition & multiplication
 
-If its initial state is 1, and we have two concurrent operations as below, what is its state after applying these operations?
+If its initial state is 1, and we have the following hashgraph (root vertex doesn't do anything i.e. it contains a null operation), what is the program state after applying the operations in the graph?
 
-<div align="center">
-    ![](/img/concurrency.png)
-</div>
+```mermaid
+flowchart LR
+    id1((root)):::large --> id2((+ 7)):::largeBold --> id3((+ 2)):::frontier
+	id1((root)):::large --> id4((x 3)):::largeBold --> id3((+ 2)):::frontier
+    classDef frontier fill:#f96, padding:15px, font-weight: bold, font-size: 20px
+    classDef largeBold padding:15px, font-weight: bold, font-size: 20px
+    classDef large padding:15px
+```
 
 Different execution orders yield different results:
 - ![](https://latex.codecogs.com/svg.latex?(1+7)\cdot3+2=26)
