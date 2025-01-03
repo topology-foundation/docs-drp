@@ -10,23 +10,25 @@ sidebar_position: 3
 ## Purpose
 
 Hashgraph serves as the *operation log* of a DRP program. It records:
-- the operations occurred
-- the causal relationship among them.
+- the **operations** occurred
+- the **causal relationship** among them.
 An operation is an update (write) on the program state.
 
 Every user in a DRP program keeps a copy (replica) of the program's hashgraph. The client application running on the user's machine:
-- reads this hashgraph for the state of the DRP program;
-- writes to the DRP program by adding new operations to its hashgraph.
+- **reads** this hashgraph for the state of the DRP program;
+- **writes** to the DRP program by adding new operations to its hashgraph.
 
 ## Structure
 
 Hashgraph is a *directed acyclic graph* (DAG), where:
-- Vertices contain both the operations and the hashes of the vertices they causally depend on. Formally, each vertex *v* can be defined as a tuple *v = (u, D)*:
+- **Vertices** contain both the operations and the hashes of the vertices they causally depend on. Formally, each vertex *v* can be defined as a tuple *v = (u, D)*:
     - *u* is an update operation
     - *D* is the set of hashed vertices that are *v*'s causal dependencies
-- Edges represent causal dependencies among the operations
+- **Edges** represent causal dependencies among the operations. An edge points from cause to effect: *v -> u* means *u* is causally dependent on *v*.
 
 **Frontier** is the set of vertices that has no children. They are the ones most recently added.
+
+> ⚠️ Note: the directionality of edges here is chosen to be _opposite_ of the one used in [the whitepaper](https://paper.topology.gg/drp-whitepaper.pdf), on purpose. The directionality used in the whitepaper refers to causality reporting: *u* reports *v* as its dependency, so an edge points from *u* to *v*. See figure 5 of [this paper](https://arxiv.org/pdf/2012.00472) to learn more. Whereas the directionality used here follows the event graph convention, where edges point in the same direction as time, which we consider to be more intuitive. For example, see [this paper](https://arxiv.org/pdf/2409.14252).
 
 ## Example
 
