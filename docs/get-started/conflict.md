@@ -21,7 +21,7 @@ If its initial state is 1, and we have the following hashgraph (root vertex does
 ```mermaid
 flowchart LR
     id1((root)):::large --> id2((+ 7)):::largeBold --> id3((+ 2)):::frontier
-	id1((root)):::large --> id4((x 3)):::largeBold --> id3((+ 2)):::frontier
+    id1((root)):::large --> id4((x 3)):::largeBold --> id3((+ 2)):::frontier
     classDef frontier fill:#f96, padding:15px, font-weight: bold, font-size: 20px
     classDef largeBold padding:15px, font-weight: bold, font-size: 20px
     classDef large padding:15px
@@ -43,13 +43,14 @@ This behavioral description is also called [concurrency semantics](https://en.wi
 
 We need to set rules for how to handle conflicts. These rules are to be followed by every honest user of a DRP program. We call them **conflict resolution rules**.
 
-In resolving a conflict, some of the operations involved might be dropped, while the rest of them might be ordered in a replicable manner.
+In resolving a conflict, some of the operations involved might be dropped, while the rest of them are ordered in a deterministic manner.
 
-Recall the example above, where addition and multiplication constitute a conflict. We could define its conflict resolution as "multiplication first":
-- No operations are dropped
-- Multiplication is ordered before addition
+Recall the example above, where addition and multiplication constitute a conflict. We could define its conflict resolution as "Multiplication First":
+```
+When in conflict, Multiplication is always ordered before Addition.
+```
 
-This way, the final DRP program state will always be 12.
+This way, any honest node following this rule would arrive at 12 as the final program state.
 
 ## Analogy
 
