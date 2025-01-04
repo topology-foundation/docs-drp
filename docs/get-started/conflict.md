@@ -70,4 +70,4 @@ Following the same rule, both Alice and Bob arrive at an identical sand disk.
 
 ---
 
-Page last updated: November 28, 2024
+Page last updated: January 3, 2025
